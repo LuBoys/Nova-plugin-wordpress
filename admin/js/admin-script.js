@@ -1,10 +1,10 @@
 jQuery(document).ready(function($) {
-    var $slider = $('input[name="custom_widgets_gradient_size"]');
-    var $sizeValue = $('#gradient-size-value');
+    // Initialize WordPress color picker
+    $('.custom-widgets-color-field').wpColorPicker();
 
-    $slider.on('input', function() {
+    // Handle gradient size slider
+    $('.slider').on('input', function() {
         var value = $(this).val();
-        $sizeValue.text(value + 'px');
-        $('input[name="custom_widgets_gradient_size"]').val(value);
-    }).trigger('input');
+        $('#gradient-size-value').text(value + 'px');
+    });
 });

@@ -52,7 +52,9 @@ add_action('admin_menu', 'custom_widgets_add_admin_menu');
 
 // Admin page content
 function custom_widgets_admin_page() {
+    // Vérifier si le nonce est valide pour éviter les attaques CSRF
     if (isset($_POST['custom_widgets_nonce']) && wp_verify_nonce($_POST['custom_widgets_nonce'], 'custom_widgets_save_settings')) {
+        // Enregistrer les paramètres du formulaire dans la base de données
         $draggable_enabled = isset($_POST['custom_widgets_draggable_enabled']) ? 'yes' : 'no';
         update_option('custom_widgets_draggable_enabled', $draggable_enabled);
 
@@ -71,12 +73,14 @@ function custom_widgets_admin_page() {
         $gradient_size = sanitize_text_field($_POST['custom_widgets_gradient_size']);
         update_option('custom_widgets_gradient_size', $gradient_size);
     }
+
+    // Récupérer les valeurs enregistrées pour préremplir le formulaire
     $draggable_enabled = get_option('custom_widgets_draggable_enabled', 'no');
     $animated_image_gallery_enabled = get_option('custom_widgets_animated_image_gallery_enabled', 'no');
     $animated_text_enabled = get_option('custom_widgets_animated_text_enabled', 'no');
     $gradient_follower_enabled = get_option('custom_widgets_gradient_follower_enabled', 'no');
     $gradient_color = get_option('custom_widgets_gradient_color', '#9548e2');
-    $gradient_size = get_option('custom_widgets_gradient_size', 'farthest-side');
+    $gradient_size = get_option('custom_widgets_gradient_size', '100px');
     ?>
     <div class="wrap">
         <h1>Nova Widgets Settings</h1>
@@ -128,12 +132,8 @@ function custom_widgets_admin_page() {
                 <tr valign="top">
                     <th scope="row">Gradient Size</th>
                     <td>
-                        <select name="custom_widgets_gradient_size">
-                            <option value="closest-side" <?php selected($gradient_size, 'closest-side'); ?>>Closest Side</option>
-                            <option value="farthest-side" <?php selected($gradient_size, 'farthest-side'); ?>>Farthest Side</option>
-                            <option value="closest-corner" <?php selected($gradient_size, 'closest-corner'); ?>>Closest Corner</option>
-                            <option value="farthest-corner" <?php selected($gradient_size, 'farthest-corner'); ?>>Farthest Corner</option>
-                        </select>
+                        <input type="range" name="custom_widgets_gradient_size" min="50" max="300" value="<?php echo esc_attr($gradient_size); ?>" class="slider" />
+                        <span id="gradient-size-value"><?php echo esc_attr($gradient_size); ?>px</span>
                     </td>
                 </tr>
             </table>
@@ -145,7 +145,7 @@ function custom_widgets_admin_page() {
     <?php
 }
 
-// Enqueue admin styles and scripts
+
 function custom_widgets_admin_assets($hook) {
     if ($hook != 'toplevel_page_custom-widgets') {
         return;
@@ -156,10 +156,10 @@ function custom_widgets_admin_assets($hook) {
 }
 add_action('admin_enqueue_scripts', 'custom_widgets_admin_assets');
 
-// Enqueue the gradient follower styles dynamically
+
 function custom_widgets_enqueue_dynamic_styles() {
     $gradient_color = get_option('custom_widgets_gradient_color', '#9548e2');
-    $gradient_size = get_option('custom_widgets_gradient_size', 'farthest-side');
+    $gradient_size = get_option('custom_widgets_gradient_size', '100px');
     $gradient_follower_enabled = get_option('custom_widgets_gradient_follower_enabled', 'no');
 
     if ($gradient_follower_enabled === 'yes') {
