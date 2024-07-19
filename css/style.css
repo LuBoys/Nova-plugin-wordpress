@@ -1,0 +1,57 @@
+.draggable-container {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Assure que le conteneur prend toute la hauteur de la vue */
+    overflow: hidden; /* Empêche le défilement si l'élément est déplacé trop loin */
+}
+
+.draggable-element {
+    position: absolute; /* Permet de positionner librement l'élément */
+    cursor: move; /* Change le curseur pour indiquer qu'il est draggable */
+}
+
+
+.custom-gallery {
+    display: grid;
+    gap: 10px;
+}
+
+.custom-gallery-item {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* This ensures the image retains a square aspect ratio */
+}
+
+.custom-gallery-item img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.animated-text {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.gradient-follower {
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+}
+
+.gradient-follower::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle farthest-side at var(--x, 50%) var(--y, 50%), #9548e2 0%, transparent 100%);
+    opacity: 0.4;
+    pointer-events: none;
+}

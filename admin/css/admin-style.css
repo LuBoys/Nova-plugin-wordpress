@@ -1,0 +1,63 @@
+/* Styles for admin page */
+
+.wrap {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.wrap h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.form-table {
+    width: 100%;
+}
+
+.form-table th {
+    font-weight: bold;
+    text-align: left;
+    padding: 10px 0;
+    width: 200px;
+}
+
+.form-table td {
+    padding: 10px 0;
+}
+
+.form-table input[type="checkbox"] {
+    transform: scale(1.5);
+    margin-right: 10px;
+}
+
+.submit input {
+    background: #0073aa;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.submit input:hover {
+    background: #005177;
+}
+
+.wp-picker-container {
+    margin-top: 5px;
+}
+.slider {
+    width: 100%;
+    margin-top: 5px;
+}
+.custom-widgets-color-field {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+}
