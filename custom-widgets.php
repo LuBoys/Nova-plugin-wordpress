@@ -52,9 +52,7 @@ add_action('admin_menu', 'custom_widgets_add_admin_menu');
 
 // Admin page content
 function custom_widgets_admin_page() {
-    // Vérifier si le nonce est valide pour éviter les attaques CSRF
     if (isset($_POST['custom_widgets_nonce']) && wp_verify_nonce($_POST['custom_widgets_nonce'], 'custom_widgets_save_settings')) {
-        // Enregistrer les paramètres du formulaire dans la base de données
         $draggable_enabled = isset($_POST['custom_widgets_draggable_enabled']) ? 'yes' : 'no';
         update_option('custom_widgets_draggable_enabled', $draggable_enabled);
 
@@ -74,7 +72,6 @@ function custom_widgets_admin_page() {
         update_option('custom_widgets_gradient_size', $gradient_size);
     }
 
-    // Récupérer les valeurs enregistrées pour préremplir le formulaire
     $draggable_enabled = get_option('custom_widgets_draggable_enabled', 'no');
     $animated_image_gallery_enabled = get_option('custom_widgets_animated_image_gallery_enabled', 'no');
     $animated_text_enabled = get_option('custom_widgets_animated_text_enabled', 'no');
@@ -145,7 +142,7 @@ function custom_widgets_admin_page() {
     <?php
 }
 
-
+// Enqueue admin styles and scripts
 function custom_widgets_admin_assets($hook) {
     if ($hook != 'toplevel_page_custom-widgets') {
         return;
@@ -156,7 +153,7 @@ function custom_widgets_admin_assets($hook) {
 }
 add_action('admin_enqueue_scripts', 'custom_widgets_admin_assets');
 
-
+// Enqueue the gradient follower styles dynamically
 function custom_widgets_enqueue_dynamic_styles() {
     $gradient_color = get_option('custom_widgets_gradient_color', '#9548e2');
     $gradient_size = get_option('custom_widgets_gradient_size', '100px');
