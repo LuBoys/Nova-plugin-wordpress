@@ -158,8 +158,8 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
         $settings = $this->get_settings_for_display();
         $tag = $settings['header_tag'];
         ?>
-        <div class="bouncing-text-container">
-            <<?php echo $tag; ?> class="bouncing-text" data-bounce-height="<?php echo esc_attr($settings['bounce_height']['size']); ?>" data-bounce-speed="<?php echo esc_attr($settings['bounce_speed']['size']); ?>">
+        <div class="bouncing-text-container" data-bounce-height="<?php echo esc_attr($settings['bounce_height']['size']); ?>" data-bounce-speed="<?php echo esc_attr($settings['bounce_speed']['size']); ?>">
+            <<?php echo $tag; ?> class="bouncing-text">
                 <?php echo esc_html($settings['text']); ?>
             </<?php echo $tag; ?>>
         </div>
@@ -173,8 +173,8 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
         var bounce_height = settings.bounce_height.size;
         var bounce_speed = settings.bounce_speed.size;
         #>
-        <div class="bouncing-text-container">
-            <{{{ tag }}} class="bouncing-text" data-bounce-height="{{ bounce_height }}" data-bounce-speed="{{ bounce_speed }}">
+        <div class="bouncing-text-container" data-bounce-height="{{ bounce_height }}" data-bounce-speed="{{ bounce_speed }}">
+            <{{{ tag }}} class="bouncing-text">
                 {{{ settings.text }}}
             </{{{ tag }}}>
         </div>

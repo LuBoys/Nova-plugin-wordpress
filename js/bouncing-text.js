@@ -1,14 +1,15 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const text = document.querySelector('.bouncing-text');
-    if (text) {
-        const bounceHeight = text.getAttribute('data-bounce-height');
-        const bounceSpeed = text.getAttribute('data-bounce-speed');
+    const containers = document.querySelectorAll('.bouncing-text-container');
+    containers.forEach(container => {
+        const text = container.querySelector('.bouncing-text');
+        const bounceHeight = container.getAttribute('data-bounce-height');
+        const bounceSpeed = container.getAttribute('data-bounce-speed');
         gsap.to(text, {
             y: -bounceHeight,
-            duration: bounceSpeed,
+            duration: parseFloat(bounceSpeed),
             repeat: -1,
             yoyo: true,
             ease: "bounce.out"
         });
-    }
+    });
 });
