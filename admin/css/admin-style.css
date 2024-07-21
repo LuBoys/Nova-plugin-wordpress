@@ -1,5 +1,6 @@
-/* Styles for admin page */
+/* admin-style.css - CSS for the Admin Dashboard of the Custom Widgets Plugin */
 
+/* Admin Page Styles */
 .wrap {
     background: #f9f9f9;
     border: 1px solid #ddd;
@@ -35,6 +36,7 @@
     margin-right: 10px;
 }
 
+/* Submit Button */
 .submit input {
     background: #0073aa;
     color: #fff;
@@ -47,17 +49,4 @@
 
 .submit input:hover {
     background: #005177;
-}
-
-.wp-picker-container {
-    margin-top: 5px;
-}
-.slider {
-    width: 100%;
-    margin-top: 5px;
-}
-.custom-widgets-color-field {
-    width: 100%;
-    padding: 5px;
-    margin-top: 5px;
 }

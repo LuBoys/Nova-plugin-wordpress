@@ -1,3 +1,6 @@
+/* style.css - Frontend CSS for the Custom Widgets Plugin */
+
+/* Draggable Container */
 .draggable-container {
     position: relative;
     width: 100%;
@@ -5,12 +8,13 @@
     overflow: hidden; /* Empêche le défilement si l'élément est déplacé trop loin */
 }
 
+/* Draggable Element */
 .draggable-element {
     position: absolute; /* Permet de positionner librement l'élément */
     cursor: move; /* Change le curseur pour indiquer qu'il est draggable */
 }
 
-
+/* Custom Gallery */
 .custom-gallery {
     display: grid;
     gap: 10px;
@@ -19,7 +23,7 @@
 .custom-gallery-item {
     position: relative;
     width: 100%;
-    padding-bottom: 100%; /* This ensures the image retains a square aspect ratio */
+    padding-bottom: 100%; /* Maintient une proportion carrée pour l'image */
 }
 
 .custom-gallery-item img {
@@ -33,25 +37,7 @@
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+/* Animated Text */
 .animated-text {
     transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.gradient-follower {
-    pointer-events: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10000;
-}
-
-.gradient-follower::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle farthest-side at var(--x, 50%) var(--y, 50%), #9548e2 0%, transparent 100%);
-    opacity: 0.4;
-    pointer-events: none;
 }
