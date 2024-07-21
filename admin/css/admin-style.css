@@ -2,22 +2,25 @@
 
 /* Admin Page Styles */
 .wrap {
-    background: #f9f9f9;
+    background: #121212;
     border: 1px solid #ddd;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     max-width: 600px;
     margin: 20px auto;
+    color: #fff;
 }
 
-.wrap h1 {
+.wrap h1, .wrap h2 {
     font-size: 24px;
     margin-bottom: 20px;
+    color: #9548e2;
 }
 
 .form-table {
     width: 100%;
+    margin-bottom: 20px;
 }
 
 .form-table th {
@@ -25,6 +28,7 @@
     text-align: left;
     padding: 10px 0;
     width: 200px;
+    color: #9548e2;
 }
 
 .form-table td {
@@ -36,9 +40,18 @@
     margin-right: 10px;
 }
 
+.form-table input[type="email"], .form-table textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #000;
+}
+
 /* Submit Button */
 .submit input {
-    background: #0073aa;
+    background: #9548e2;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -48,5 +61,5 @@
 }
 
 .submit input:hover {
-    background: #005177;
+    background: #7a37b0;
 }

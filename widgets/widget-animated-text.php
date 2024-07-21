@@ -120,9 +120,11 @@ class Widget_Animated_Text extends Widget_Base {
         $settings = $this->get_settings_for_display();
         $tag = $settings['html_tag'];
         ?>
-        <<?php echo esc_html($tag); ?> class="animated-text"><?php echo esc_html($settings['animated_text']); ?></<?php echo esc_html($tag); ?>>
+        <<?php echo esc_html($tag); ?> class="animated-text fade-in"><?php echo esc_html($settings['animated_text']); ?></<?php echo esc_html($tag); ?>>
         <?php
     }
+
+    protected function content_template() {}
 }
 
 \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widget_Animated_Text());

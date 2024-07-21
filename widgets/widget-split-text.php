@@ -3,14 +3,14 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
-class Widget_Bouncing_Text extends \Elementor\Widget_Base {
+class Widget_Split_Text extends \Elementor\Widget_Base {
 
     public function get_name() {
-        return 'bouncing_text';
+        return 'split_text';
     }
 
     public function get_title() {
-        return __('Bouncing Text', 'nova-widgets');
+        return __('Split Text Animation', 'nova-widgets');
     }
 
     public function get_icon() {
@@ -35,7 +35,7 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
             [
                 'label' => __('Text', 'nova-widgets'),
                 'type' => \Elementor\Controls_Manager::TEXT,
-                'default' => __('Bouncing Text', 'nova-widgets'),
+                'default' => __('Animated Text', 'nova-widgets'),
             ]
         );
 
@@ -56,14 +56,16 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
                 'default' => 'h1',
             ]
         );
-        $this->add_control(
-            'bounce_link',
-            [
-                'label' => __( 'Lien', 'text-domain' ),
-                'type' => \Elementor\Controls_Manager::URL,
-                'placeholder' => __( 'https://votre-lien.com', 'text-domain' ),
-            ]
-        );
+        // Add this in the content_controls section
+$this->add_control(
+    'split_link',
+    [
+        'label' => __( 'Lien', 'text-domain' ),
+        'type' => \Elementor\Controls_Manager::URL,
+        'placeholder' => __( 'https://votre-lien.com', 'text-domain' ),
+    ]
+);
+
 
         $this->end_controls_section();
 
@@ -82,7 +84,7 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'default' => '#000000',
                 'selectors' => [
-                    '{{WRAPPER}} .bouncing-text' => 'color: {{VALUE}}',
+                    '{{WRAPPER}} .split-text' => 'color: {{VALUE}}',
                 ],
             ]
         );
@@ -91,7 +93,7 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
             \Elementor\Group_Control_Typography::get_type(),
             [
                 'name' => 'typography',
-                'selector' => '{{WRAPPER}} .bouncing-text',
+                'selector' => '{{WRAPPER}} .split-text',
             ]
         );
 
@@ -116,63 +118,8 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
                 ],
                 'default' => 'center',
                 'selectors' => [
-                    '{{WRAPPER}} .bouncing-text-container' => 'text-align: {{VALUE}}',
+                    '{{WRAPPER}} .split-text-container' => 'text-align: {{VALUE}}',
                 ],
-            ]
-        );
-
-        $this->add_control(
-            'bounce_height',
-            [
-                'label' => __('Bounce Height', 'nova-widgets'),
-                'type' => \Elementor\Controls_Manager::SLIDER,
-                'range' => [
-                    'px' => [
-                        'min' => 50,
-                        'max' => 300,
-                        'step' => 10,
-                    ],
-                ],
-                'default' => [
-                    'size' => 150,
-                    'unit' => 'px',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'bounce_speed',
-            [
-                'label' => __('Bounce Speed', 'nova-widgets'),
-                'type' => \Elementor\Controls_Manager::SLIDER,
-                'range' => [
-                    's' => [
-                        'min' => 0.1,
-                        'max' => 3,
-                        'step' => 0.1,
-                    ],
-                ],
-                'default' => [
-                    'size' => 0.5,
-                    'unit' => 's',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'bounce_repeat',
-            [
-                'label' => __('Bounce Repeat', 'nova-widgets'),
-                'type' => \Elementor\Controls_Manager::SELECT,
-                'options' => [
-                    '1' => '1',
-                    '2' => '2',
-                    '3' => '3',
-                    '4' => '4',
-                    '5' => '5',
-                    '-1' => 'Infinite',
-                ],
-                'default' => '-1',
             ]
         );
 
@@ -182,10 +129,13 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
     protected function render() {
         $settings = $this->get_settings_for_display();
         $tag = $settings['header_tag'];
+        $text = $settings['text'];
         ?>
-        <div class="bouncing-text-container" data-bounce-height="<?php echo esc_attr($settings['bounce_height']['size']); ?>" data-bounce-speed="<?php echo esc_attr($settings['bounce_speed']['size']); ?>" data-bounce-repeat="<?php echo esc_attr($settings['bounce_repeat']); ?>">
-            <<?php echo $tag; ?> class="bouncing-text">
-                <?php echo esc_html($settings['text']); ?>
+        <div class="split-text-container" style="text-align: <?php echo esc_attr($settings['text_align']); ?>;">
+            <<?php echo $tag; ?> class="split-text">
+                <?php foreach (str_split($text) as $char): ?>
+                    <span class="char"><?php echo esc_html($char); ?></span>
+                <?php endforeach; ?>
             </<?php echo $tag; ?>>
         </div>
         <?php
@@ -195,16 +145,19 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
         ?>
         <#
         var tag = settings.header_tag;
-        var bounce_height = settings.bounce_height.size;
-        var bounce_speed = settings.bounce_speed.size;
-        var bounce_repeat = settings.bounce_repeat;
+        var text = settings.text;
+        var chars = text.split('');
+        var link = settings.split_link.url;
         #>
-        <div class="bouncing-text-container" data-bounce-height="{{ bounce_height }}" data-bounce-speed="{{ bounce_speed }}" data-bounce-repeat="{{ bounce_repeat }}">
-            <{{{ tag }}} class="bouncing-text">
-                {{{ settings.text }}}
+        <div class="split-text-container" style="text-align: {{{ settings.text_align }}};">
+            <{{{ tag }}} class="split-text">
+                <# chars.forEach(function(char) { #>
+                    <span class="char">{{{ char }}}</span>
+                <# }); #>
             </{{{ tag }}}>
         </div>
         <?php
     }
 }
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widget_Bouncing_Text());
+
+\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widget_Split_Text());

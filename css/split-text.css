@@ -1,0 +1,14 @@
+.split-text-container {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.split-text {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.split-text .char {
+    display: inline-block;
+    transition: transform 0.3s, opacity 0.3s;
+}

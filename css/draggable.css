@@ -1,0 +1,12 @@
+/* Draggable Widget Styles */
+.draggable-container {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Assure que le conteneur prend toute la hauteur de la vue */
+    overflow: hidden; /* Empêche le défilement si l'élément est déplacé trop loin */
+}
+
+.draggable-element {
+    position: absolute; /* Permet de positionner librement l'élément */
+    cursor: move; /* Change le curseur pour indiquer qu'il est draggable */
+}
