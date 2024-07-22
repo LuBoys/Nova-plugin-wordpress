@@ -1,0 +1,9 @@
+.bouncing-text-container {
+    display: inline-block;
+    text-align: center;
+}
+
+.bouncing-text {
+    display: inline-block;
+    will-change: transform;
+}

@@ -1,65 +1,68 @@
-/* admin-style.css - CSS for the Admin Dashboard of the Custom Widgets Plugin */
-
-/* Admin Page Styles */
-.wrap {
+/* General Styles */
+.custom-nova-settings {
     background: #121212;
-    border: 1px solid #ddd;
+    color: #ffffff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    max-width: 600px;
-    margin: 20px auto;
-    color: #fff;
 }
 
-.wrap h1, .wrap h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
+.custom-nova-settings h1, .custom-nova-settings h2 {
     color: #9548e2;
 }
 
-.form-table {
-    width: 100%;
-    margin-bottom: 20px;
+.custom-nova-settings label {
+    color: #ffffff;
 }
 
-.form-table th {
-    font-weight: bold;
-    text-align: left;
-    padding: 10px 0;
+.custom-nova-settings .submit {
+    margin-top: 20px;
+}
+
+.custom-nova-settings .form-table th {
     width: 200px;
-    color: #9548e2;
 }
 
-.form-table td {
-    padding: 10px 0;
-}
-
-.form-table input[type="checkbox"] {
-    transform: scale(1.5);
+.custom-nova-settings input[type="checkbox"] {
     margin-right: 10px;
 }
 
-.form-table input[type="email"], .form-table textarea {
+.custom-nova-settings textarea {
     width: 100%;
-    padding: 10px;
+    height: 100px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     border-radius: 4px;
     border: 1px solid #ccc;
-    background: #fff;
-    color: #000;
+    padding: 10px;
+    color: #000000;
 }
 
-/* Submit Button */
-.submit input {
-    background: #9548e2;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+.custom-nova-settings input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    color: #000000;
 }
 
-.submit input:hover {
-    background: #7a37b0;
+.custom-nova-settings .form-table {
+    border-spacing: 0 10px;
+}
+
+.custom-nova-settings .form-table th, .custom-nova-settings .form-table td {
+    padding: 10px;
+}
+
+.custom-nova-settings .form-table th {
+    text-align: left;
+}
+
+.custom-nova-settings .form-table td label {
+    display: flex;
+    align-items: center;
+}
+
+.custom-nova-settings .form-table td {
+    vertical-align: middle;
 }

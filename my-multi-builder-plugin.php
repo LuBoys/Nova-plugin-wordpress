@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Nova Widgets
- * Description: Une collection de widgets Elementor personnalisés, y compris des éléments glissants avec GSAP et plus encore, créés par <a href="https://nova-on.com" target="_blank">Nova web agency</a>.
+ * Description: Une collection de widgets Elementor et Divi personnalisés, y compris des éléments glissants avec GSAP et plus encore, créés par <a href="https://nova-on.com" target="_blank">Nova web agency</a>.
  * Version: 1.0
  * Author: Nova
  * License: GPLv2 or later
@@ -14,6 +14,7 @@ if (!defined('ABSPATH')) {
 
 // Enqueue scripts and styles
 function custom_widgets_enqueue_assets() {
+    // Common styles and scripts for both Elementor and Divi
     wp_enqueue_style('custom-widgets-style', plugin_dir_url(__FILE__) . 'css/style.css');
     wp_enqueue_script('gsap-js', 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js', array(), null, true);
     wp_enqueue_script('gsap-draggable', 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Draggable.min.js', array('gsap-js'), null, true);
@@ -22,29 +23,57 @@ function custom_widgets_enqueue_assets() {
     wp_enqueue_script('custom-widgets-animated-text-script', plugin_dir_url(__FILE__) . 'js/animated-text.js', array('jquery', 'gsap-js'), null, true);
     wp_enqueue_script('custom-widgets-bouncing-text-script', plugin_dir_url(__FILE__) . 'js/bouncing-text.js', array('gsap-js'), null, true);
     wp_enqueue_script('custom-widgets-split-text-script', plugin_dir_url(__FILE__) . 'js/split-text.js', array('gsap-js'), null, true);
-    wp_enqueue_style('custom-widgets-animated-text-style', plugin_dir_url(__FILE__) . 'css/animated-text.css');
-    wp_enqueue_style('custom-widgets-split-text-style', plugin_dir_url(__FILE__) . 'css/split-text.css');
+
+    // Separate styles for Elementor and Divi
+    if (get_option('custom_widgets_elementor_enabled') === 'yes') {
+        wp_enqueue_style('custom-widgets-animated-text-style-elementor', plugin_dir_url(__FILE__) . 'css/elementor/animated-text.css');
+        wp_enqueue_style('custom-widgets-split-text-style-elementor', plugin_dir_url(__FILE__) . 'css/elementor/split-text.css');
+        wp_enqueue_style('custom-widgets-animated-image-gallery-style-elementor', plugin_dir_url(__FILE__) . 'css/elementor/animated-image-gallery.css');
+        wp_enqueue_style('custom-widgets-bouncing-text-style-elementor', plugin_dir_url(__FILE__) . 'css/elementor/bouncing-text.css');
+        wp_enqueue_style('custom-widgets-draggable-style-elementor', plugin_dir_url(__FILE__) . 'css/elementor/draggable.css');
+    }
+
+    if (get_option('custom_widgets_divi_enabled') === 'yes') {
+        wp_enqueue_style('custom-widgets-animated-text-style-divi', plugin_dir_url(__FILE__) . 'css/divi/animated-text.css');
+        wp_enqueue_style('custom-widgets-split-text-style-divi', plugin_dir_url(__FILE__) . 'css/divi/split-text.css');
+        wp_enqueue_style('custom-widgets-animated-image-gallery-style-divi', plugin_dir_url(__FILE__) . 'css/divi/animated-image-gallery.css');
+        wp_enqueue_style('custom-widgets-bouncing-text-style-divi', plugin_dir_url(__FILE__) . 'css/divi/bouncing-text.css');
+        wp_enqueue_style('custom-widgets-draggable-style-divi', plugin_dir_url(__FILE__) . 'css/divi/draggable.css');
+    }
 }
 add_action('wp_enqueue_scripts', 'custom_widgets_enqueue_assets');
 
-// Register the widgets
+// Register the widgets for Elementor and Divi
 function register_custom_elementor_widgets($widgets_manager) {
-    require_once(__DIR__ . '/widgets/widget-draggable.php');
-    $widgets_manager->register(new \Elementor\Widget_Draggable());
-    
-    require_once(__DIR__ . '/widgets/widget-animated-image-gallery.php');
-    $widgets_manager->register(new \Elementor\Widget_Animated_Image_Gallery());
-    
-    require_once(__DIR__ . '/widgets/widget-animated-text.php');
-    $widgets_manager->register(new \Elementor\Widget_Animated_Text());
+    if (get_option('custom_widgets_elementor_enabled') === 'yes') {
+        require_once(__DIR__ . '/widgets/elementor/widget-draggable.php');
+        $widgets_manager->register(new \Elementor\Widget_Draggable());
 
-    require_once(__DIR__ . '/widgets/widget-bouncing-text.php');
-    $widgets_manager->register(new \Widget_Bouncing_Text());
+        require_once(__DIR__ . '/widgets/elementor/widget-animated-image-gallery.php');
+        $widgets_manager->register(new \Elementor\Widget_Animated_Image_Gallery());
 
-    require_once(__DIR__ . '/widgets/widget-split-text.php');
-    $widgets_manager->register(new \Widget_Split_Text());
+        require_once(__DIR__ . '/widgets/elementor/widget-animated-text.php');
+        $widgets_manager->register(new \Elementor\Widget_Animated_Text());
+
+        require_once(__DIR__ . '/widgets/elementor/widget-bouncing-text.php');
+        $widgets_manager->register(new \Elementor\Widget_Bouncing_Text());
+
+        require_once(__DIR__ . '/widgets/elementor/widget-split-text.php');
+        $widgets_manager->register(new \Elementor\Widget_Split_Text());
+    }
 }
 add_action('elementor/widgets/register', 'register_custom_elementor_widgets');
+
+function register_custom_divi_modules() {
+    if (get_option('custom_widgets_divi_enabled') === 'yes') {
+        require_once(__DIR__ . '/widgets/divi/DraggableModule.php');
+        require_once(__DIR__ . '/widgets/divi/AnimatedTextModule.php');
+        require_once(__DIR__ . '/widgets/divi/widget-animated-image-gallery.php');
+        require_once(__DIR__ . '/widgets/divi/widget-bouncing-text.php');
+        require_once(__DIR__ . '/widgets/divi/widget-split-text.php');
+    }
+}
+add_action('et_builder_ready', 'register_custom_divi_modules');
 
 // Add admin menu
 function custom_widgets_add_admin_menu() {
@@ -76,6 +105,12 @@ function custom_widgets_admin_page() {
 
         $split_text_enabled = isset($_POST['custom_widgets_split_text_enabled']) ? 'yes' : 'no';
         update_option('custom_widgets_split_text_enabled', $split_text_enabled);
+
+        $elementor_enabled = isset($_POST['custom_widgets_elementor_enabled']) ? 'yes' : 'no';
+        update_option('custom_widgets_elementor_enabled', $elementor_enabled);
+
+        $divi_enabled = isset($_POST['custom_widgets_divi_enabled']) ? 'yes' : 'no';
+        update_option('custom_widgets_divi_enabled', $divi_enabled);
     }
 
     $draggable_enabled = get_option('custom_widgets_draggable_enabled', 'no');
@@ -83,6 +118,8 @@ function custom_widgets_admin_page() {
     $animated_text_enabled = get_option('custom_widgets_animated_text_enabled', 'no');
     $bouncing_text_enabled = get_option('custom_widgets_bouncing_text_enabled', 'no');
     $split_text_enabled = get_option('custom_widgets_split_text_enabled', 'no');
+    $elementor_enabled = get_option('custom_widgets_elementor_enabled', 'no');
+    $divi_enabled = get_option('custom_widgets_divi_enabled', 'no');
     ?>
     <div class="wrap custom-nova-settings">
         <h1>Paramètres de Nova Widgets</h1>
@@ -134,31 +171,49 @@ function custom_widgets_admin_page() {
                         </label>
                     </td>
                 </tr>
+                <tr valign="top">
+                    <th scope="row">Activer pour Elementor</th>
+                    <td>
+                        <label for="custom_widgets_elementor_enabled">
+                            <input type="checkbox" name="custom_widgets_elementor_enabled" id="custom_widgets_elementor_enabled" value="yes" <?php checked($elementor_enabled, 'yes'); ?> />
+                            Activer les widgets pour Elementor.
+                        </label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Activer pour Divi</th>
+                    <td>
+                        <label for="custom_widgets_divi_enabled">
+                            <input type="checkbox" name="custom_widgets_divi_enabled" id="custom_widgets_divi_enabled" value="yes" <?php checked($divi_enabled, 'yes'); ?> />
+                            Activer les widgets pour Divi.
+                        </label>
+                    </td>
+                </tr>
             </table>
             <div class="submit">
                 <?php submit_button('Enregistrer les paramètres'); ?>
             </div>
         </form>
         <hr>
-        <h2>Votre Feedback</h2>
+        <h2>Feedback</h2>
         <form method="post" action="">
-            <?php wp_nonce_field('custom_widgets_send_feedback', 'custom_widgets_feedback_nonce'); ?>
+            <?php wp_nonce_field('custom_widgets_save_feedback', 'custom_widgets_feedback_nonce'); ?>
             <table class="form-table">
                 <tr valign="top">
-                    <th scope="row">Votre Feedback</th>
+                    <th scope="row">Votre avis</th>
                     <td>
                         <textarea name="custom_widgets_feedback" rows="5" cols="50"></textarea>
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row">Votre Email</th>
+                    <th scope="row">Votre email</th>
                     <td>
-                        <input type="email" name="custom_widgets_feedback_email" value="" />
+                        <input type="email" name="custom_widgets_user_email" value="" class="regular-text" />
                     </td>
                 </tr>
             </table>
             <div class="submit">
-                <?php submit_button('Envoyer le Feedback'); ?>
+                <?php submit_button('Envoyer'); ?>
             </div>
         </form>
     </div>
@@ -175,19 +230,19 @@ function custom_widgets_admin_assets($hook) {
 add_action('admin_enqueue_scripts', 'custom_widgets_admin_assets');
 
 // Handle feedback form submission
-function custom_widgets_handle_feedback_form() {
-    if (isset($_POST['custom_widgets_feedback_nonce']) && wp_verify_nonce($_POST['custom_widgets_feedback_nonce'], 'custom_widgets_send_feedback')) {
+function custom_widgets_handle_feedback_submission() {
+    if (isset($_POST['custom_widgets_feedback_nonce']) && wp_verify_nonce($_POST['custom_widgets_feedback_nonce'], 'custom_widgets_save_feedback')) {
         $feedback = sanitize_textarea_field($_POST['custom_widgets_feedback']);
-        $email = sanitize_email($_POST['custom_widgets_feedback_email']);
+        $user_email = sanitize_email($_POST['custom_widgets_user_email']);
 
-        $admin_email = get_option('admin_email');
-        $subject = 'Nouveau Feedback de Nova Widgets';
-        $message = 'Feedback: ' . $feedback . "\nEmail: " . $email;
+        // Send email
+        $to = 'votre.email@exemple.com';
+        $subject = 'Nouveau Feedback sur Nova Widgets';
+        $message = 'Feedback: ' . $feedback . "\nEmail: " . $user_email;
+        $headers = ['Content-Type: text/plain; charset=UTF-8'];
 
-        wp_mail($admin_email, $subject, $message);
-
-        echo '<div class="notice notice-success is-dismissible"><p>Merci pour votre feedback !</p></div>';
+        wp_mail($to, $subject, $message, $headers);
     }
 }
-add_action('admin_notices', 'custom_widgets_handle_feedback_form');
+add_action('admin_post_custom_widgets_handle_feedback', 'custom_widgets_handle_feedback_submission');
 ?>

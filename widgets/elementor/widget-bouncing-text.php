@@ -1,16 +1,16 @@
 <?php
-if (!defined('ABSPATH')) {
-    exit; // Exit if accessed directly.
-}
+namespace Elementor;
 
-class Widget_Bouncing_Text extends \Elementor\Widget_Base {
+if (!defined('ABSPATH')) exit; // Exit if accessed directly
+
+class Widget_Bouncing_Text extends Widget_Base {
 
     public function get_name() {
         return 'bouncing_text';
     }
 
     public function get_title() {
-        return __('Bouncing Text', 'nova-widgets');
+        return __('Bouncing Text', 'custom-widgets');
     }
 
     public function get_icon() {
@@ -25,7 +25,7 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
         $this->start_controls_section(
             'content_section',
             [
-                'label' => __('Content', 'nova-widgets'),
+                'label' => __('Content', 'custom-widgets'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -33,16 +33,16 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
         $this->add_control(
             'text',
             [
-                'label' => __('Text', 'nova-widgets'),
+                'label' => __('Text', 'custom-widgets'),
                 'type' => \Elementor\Controls_Manager::TEXT,
-                'default' => __('Bouncing Text', 'nova-widgets'),
+                'default' => __('Bouncing Text', 'custom-widgets'),
             ]
         );
 
         $this->add_control(
             'header_tag',
             [
-                'label' => __('HTML Tag', 'nova-widgets'),
+                'label' => __('HTML Tag', 'custom-widgets'),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'options' => [
                     'h1' => 'H1',
@@ -51,17 +51,18 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
                     'h4' => 'H4',
                     'h5' => 'H5',
                     'h6' => 'H6',
-                    'p' => 'Paragraph',
+                    'p' => 'P',
                 ],
                 'default' => 'h1',
             ]
         );
+
         $this->add_control(
             'bounce_link',
             [
-                'label' => __( 'Lien', 'text-domain' ),
+                'label' => __( 'Link', 'custom-widgets' ),
                 'type' => \Elementor\Controls_Manager::URL,
-                'placeholder' => __( 'https://votre-lien.com', 'text-domain' ),
+                'placeholder' => __( 'https://your-link.com', 'custom-widgets' ),
             ]
         );
 
@@ -70,7 +71,7 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
         $this->start_controls_section(
             'style_section',
             [
-                'label' => __('Style', 'nova-widgets'),
+                'label' => __('Style', 'custom-widgets'),
                 'tab' => \Elementor\Controls_Manager::TAB_STYLE,
             ]
         );
@@ -78,9 +79,8 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
         $this->add_control(
             'text_color',
             [
-                'label' => __('Text Color', 'nova-widgets'),
+                'label' => __('Text Color', 'custom-widgets'),
                 'type' => \Elementor\Controls_Manager::COLOR,
-                'default' => '#000000',
                 'selectors' => [
                     '{{WRAPPER}} .bouncing-text' => 'color: {{VALUE}}',
                 ],
@@ -98,25 +98,25 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
         $this->add_control(
             'text_align',
             [
-                'label' => __('Text Alignment', 'nova-widgets'),
+                'label' => __('Text Alignment', 'custom-widgets'),
                 'type' => \Elementor\Controls_Manager::CHOOSE,
                 'options' => [
                     'left' => [
-                        'title' => __('Left', 'nova-widgets'),
+                        'title' => __('Left', 'custom-widgets'),
                         'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
-                        'title' => __('Center', 'nova-widgets'),
+                        'title' => __('Center', 'custom-widgets'),
                         'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
-                        'title' => __('Right', 'nova-widgets'),
+                        'title' => __('Right', 'custom-widgets'),
                         'icon' => 'eicon-text-align-right',
                     ],
                 ],
                 'default' => 'center',
                 'selectors' => [
-                    '{{WRAPPER}} .bouncing-text-container' => 'text-align: {{VALUE}}',
+                    '{{WRAPPER}} .bouncing-text-container' => 'text-align: {{VALUE}};',
                 ],
             ]
         );
@@ -124,7 +124,7 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
         $this->add_control(
             'bounce_height',
             [
-                'label' => __('Bounce Height', 'nova-widgets'),
+                'label' => __('Bounce Height', 'custom-widgets'),
                 'type' => \Elementor\Controls_Manager::SLIDER,
                 'range' => [
                     'px' => [
@@ -143,7 +143,7 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
         $this->add_control(
             'bounce_speed',
             [
-                'label' => __('Bounce Speed', 'nova-widgets'),
+                'label' => __('Bounce Speed', 'custom-widgets'),
                 'type' => \Elementor\Controls_Manager::SLIDER,
                 'range' => [
                     's' => [
@@ -159,34 +159,20 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
             ]
         );
 
-        $this->add_control(
-            'bounce_repeat',
-            [
-                'label' => __('Bounce Repeat', 'nova-widgets'),
-                'type' => \Elementor\Controls_Manager::SELECT,
-                'options' => [
-                    '1' => '1',
-                    '2' => '2',
-                    '3' => '3',
-                    '4' => '4',
-                    '5' => '5',
-                    '-1' => 'Infinite',
-                ],
-                'default' => '-1',
-            ]
-        );
-
         $this->end_controls_section();
     }
 
     protected function render() {
         $settings = $this->get_settings_for_display();
         $tag = $settings['header_tag'];
+        $link = $settings['bounce_link']['url'];
         ?>
-        <div class="bouncing-text-container" data-bounce-height="<?php echo esc_attr($settings['bounce_height']['size']); ?>" data-bounce-speed="<?php echo esc_attr($settings['bounce_speed']['size']); ?>" data-bounce-repeat="<?php echo esc_attr($settings['bounce_repeat']); ?>">
-            <<?php echo $tag; ?> class="bouncing-text">
-                <?php echo esc_html($settings['text']); ?>
-            </<?php echo $tag; ?>>
+        <div class="bouncing-text-container" style="text-align: <?php echo esc_attr($settings['text_align']); ?>;" data-bounce-height="<?php echo esc_attr($settings['bounce_height']['size']); ?>" data-bounce-speed="<?php echo esc_attr($settings['bounce_speed']['size']); ?>">
+            <?php if (!empty($link)) : ?>
+                <<?php echo $tag; ?> class="bouncing-text"><a href="<?php echo esc_url($link); ?>"><?php echo esc_html($settings['text']); ?></a></<?php echo $tag; ?>>
+            <?php else : ?>
+                <<?php echo $tag; ?> class="bouncing-text"><?php echo esc_html($settings['text']); ?></<?php echo $tag; ?>>
+            <?php endif; ?>
         </div>
         <?php
     }
@@ -197,14 +183,17 @@ class Widget_Bouncing_Text extends \Elementor\Widget_Base {
         var tag = settings.header_tag;
         var bounce_height = settings.bounce_height.size;
         var bounce_speed = settings.bounce_speed.size;
-        var bounce_repeat = settings.bounce_repeat;
+        var link = settings.bounce_link.url;
         #>
-        <div class="bouncing-text-container" data-bounce-height="{{ bounce_height }}" data-bounce-speed="{{ bounce_speed }}" data-bounce-repeat="{{ bounce_repeat }}">
-            <{{{ tag }}} class="bouncing-text">
-                {{{ settings.text }}}
-            </{{{ tag }}}>
+        <div class="bouncing-text-container" style="text-align: {{{ settings.text_align }}};" data-bounce-height="{{ bounce_height }}" data-bounce-speed="{{ bounce_speed }}">
+            <# if (link) { #>
+                <{{{ tag }}} class="bouncing-text"><a href="{{{ link }}}">{{{ settings.text }}}</a></{{{ tag }}}>
+            <# } else { #>
+                <{{{ tag }}} class="bouncing-text">{{{ settings.text }}}</{{{ tag }}}>
+            <# } #>
         </div>
         <?php
     }
 }
+
 \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widget_Bouncing_Text());

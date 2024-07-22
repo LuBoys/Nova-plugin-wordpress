@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
         Draggable.create(element, {
             type: "x,y",
             edgeResistance: 0.65,
-            bounds: element.parentNode, // Utilise le parent immédiat comme limite
+            bounds: document.body, // Changez bounds pour document.body pour permettre le mouvement partout
             inertia: true
         });
     });

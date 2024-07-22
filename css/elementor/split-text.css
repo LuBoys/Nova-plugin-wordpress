@@ -1,0 +1,13 @@
+.split-text-container {
+    display: inline-block;
+    text-align: center;
+}
+
+.split-text {
+    display: inline-block;
+    will-change: transform;
+}
+
+.split-text .char {
+    display: inline-block;
+}

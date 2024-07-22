@@ -1,16 +1,16 @@
 <?php
-if (!defined('ABSPATH')) {
-    exit; // Exit if accessed directly.
-}
+namespace Elementor;
 
-class Widget_Split_Text extends \Elementor\Widget_Base {
+if (!defined('ABSPATH')) exit; // Exit if accessed directly
+
+class Widget_Split_Text extends Widget_Base {
 
     public function get_name() {
         return 'split_text';
     }
 
     public function get_title() {
-        return __('Split Text Animation', 'nova-widgets');
+        return __('Split Text Animation', 'custom-widgets');
     }
 
     public function get_icon() {
@@ -25,7 +25,7 @@ class Widget_Split_Text extends \Elementor\Widget_Base {
         $this->start_controls_section(
             'content_section',
             [
-                'label' => __('Content', 'nova-widgets'),
+                'label' => __('Content', 'custom-widgets'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -33,16 +33,16 @@ class Widget_Split_Text extends \Elementor\Widget_Base {
         $this->add_control(
             'text',
             [
-                'label' => __('Text', 'nova-widgets'),
+                'label' => __('Text', 'custom-widgets'),
                 'type' => \Elementor\Controls_Manager::TEXT,
-                'default' => __('Animated Text', 'nova-widgets'),
+                'default' => __('Split Text Animation', 'custom-widgets'),
             ]
         );
 
         $this->add_control(
             'header_tag',
             [
-                'label' => __('HTML Tag', 'nova-widgets'),
+                'label' => __('HTML Tag', 'custom-widgets'),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'options' => [
                     'h1' => 'H1',
@@ -51,28 +51,27 @@ class Widget_Split_Text extends \Elementor\Widget_Base {
                     'h4' => 'H4',
                     'h5' => 'H5',
                     'h6' => 'H6',
-                    'p' => 'Paragraph',
+                    'p' => 'P',
                 ],
                 'default' => 'h1',
             ]
         );
-        // Add this in the content_controls section
-$this->add_control(
-    'split_link',
-    [
-        'label' => __( 'Lien', 'text-domain' ),
-        'type' => \Elementor\Controls_Manager::URL,
-        'placeholder' => __( 'https://votre-lien.com', 'text-domain' ),
-    ]
-);
 
+        $this->add_control(
+            'split_link',
+            [
+                'label' => __( 'Link', 'custom-widgets' ),
+                'type' => \Elementor\Controls_Manager::URL,
+                'placeholder' => __( 'https://your-link.com', 'custom-widgets' ),
+            ]
+        );
 
         $this->end_controls_section();
 
         $this->start_controls_section(
             'style_section',
             [
-                'label' => __('Style', 'nova-widgets'),
+                'label' => __('Style', 'custom-widgets'),
                 'tab' => \Elementor\Controls_Manager::TAB_STYLE,
             ]
         );
@@ -80,9 +79,8 @@ $this->add_control(
         $this->add_control(
             'text_color',
             [
-                'label' => __('Text Color', 'nova-widgets'),
+                'label' => __('Text Color', 'custom-widgets'),
                 'type' => \Elementor\Controls_Manager::COLOR,
-                'default' => '#000000',
                 'selectors' => [
                     '{{WRAPPER}} .split-text' => 'color: {{VALUE}}',
                 ],
@@ -100,19 +98,19 @@ $this->add_control(
         $this->add_control(
             'text_align',
             [
-                'label' => __('Text Alignment', 'nova-widgets'),
+                'label' => __('Text Alignment', 'custom-widgets'),
                 'type' => \Elementor\Controls_Manager::CHOOSE,
                 'options' => [
                     'left' => [
-                        'title' => __('Left', 'nova-widgets'),
+                        'title' => __('Left', 'custom-widgets'),
                         'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
-                        'title' => __('Center', 'nova-widgets'),
+                        'title' => __('Center', 'custom-widgets'),
                         'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
-                        'title' => __('Right', 'nova-widgets'),
+                        'title' => __('Right', 'custom-widgets'),
                         'icon' => 'eicon-text-align-right',
                     ],
                 ],
@@ -130,12 +128,16 @@ $this->add_control(
         $settings = $this->get_settings_for_display();
         $tag = $settings['header_tag'];
         $text = $settings['text'];
+        $link = $settings['split_link']['url'];
         ?>
         <div class="split-text-container" style="text-align: <?php echo esc_attr($settings['text_align']); ?>;">
             <<?php echo $tag; ?> class="split-text">
                 <?php foreach (str_split($text) as $char): ?>
                     <span class="char"><?php echo esc_html($char); ?></span>
                 <?php endforeach; ?>
+                <?php if (!empty($link)) : ?>
+                    <a href="<?php echo esc_url($link); ?>"><?php echo esc_html($text); ?></a>
+                <?php endif; ?>
             </<?php echo $tag; ?>>
         </div>
         <?php
@@ -154,6 +156,9 @@ $this->add_control(
                 <# chars.forEach(function(char) { #>
                     <span class="char">{{{ char }}}</span>
                 <# }); #>
+                <# if (link) { #>
+                    <a href="{{{ link }}}">{{{ text }}}</a>
+                <# } #>
             </{{{ tag }}}>
         </div>
         <?php
