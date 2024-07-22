@@ -118,14 +118,14 @@ class DraggableModule extends ET_Builder_Module {
         $image = $this->props['image'];
         $icon = $this->props['icon'];
 
-        $content = '<div class="draggable-element" style="position: absolute;">';
+        $content = '<div class="draggable-container">'; // Container
 
         if ($content_type === 'text') {
-            $content .= sprintf('<%1$s>%2$s</%1$s>', esc_html($html_tag), esc_html($text));
+            $content .= sprintf('<%1$s class="draggable-element">%2$s</%1$s>', esc_html($html_tag), esc_html($text));
         } elseif ($content_type === 'image') {
-            $content .= sprintf('<img src="%1$s" alt="" />', esc_url($image));
+            $content .= sprintf('<div class="draggable-element"><img src="%1$s" alt="" /></div>', esc_url($image));
         } elseif ($content_type === 'icon') {
-            $content .= sprintf('<span class="et-pb-icon">%1$s</span>', esc_html($icon));
+            $content .= sprintf('<div class="draggable-element"><span class="et-pb-icon">%1$s</span></div>', esc_html($icon));
         }
 
         $content .= '</div>';
@@ -135,4 +135,3 @@ class DraggableModule extends ET_Builder_Module {
 }
 
 new DraggableModule();
-

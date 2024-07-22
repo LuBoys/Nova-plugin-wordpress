@@ -1,12 +1,15 @@
 .custom-gallery {
     display: grid;
     gap: 10px;
+    z-index: 1; /* Ajouté pour s'assurer que la galerie est au-dessus des autres éléments */
+    position: relative; /* Assurez-vous que la galerie est relative pour que les z-index fonctionnent correctement */
 }
 
 .custom-gallery-item {
     position: relative;
     width: 100%;
     padding-bottom: 100%;
+    z-index: 1; /* Assurez-vous que chaque item est au-dessus des autres éléments */
 }
 
 .custom-gallery-item img {

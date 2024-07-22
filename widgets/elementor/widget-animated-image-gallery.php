@@ -94,9 +94,9 @@ class Widget_Animated_Image_Gallery extends Widget_Base {
         $columns = $settings['columns'];
 
         if (!empty($settings['gallery_images'])) {
-            echo '<div class="custom-gallery" style="display: grid; grid-template-columns: repeat(' . esc_attr($columns) . ', 1fr); gap: ' . esc_attr($settings['gap']['size']) . 'px;">';
+            echo '<div class="custom-gallery" style="display: grid; grid-template-columns: repeat(' . esc_attr($columns) . ', 1fr); gap: ' . esc_attr($settings['gap']['size']) . 'px; position: relative; z-index: 1;">'; // Assurez-vous que la galerie est en position relative et au-dessus des autres éléments
             foreach ($settings['gallery_images'] as $image) {
-                echo '<div class="custom-gallery-item">';
+                echo '<div class="custom-gallery-item" style="z-index: 1;">';
                 echo '<img src="' . esc_url($image['url']) . '" alt="" />';
                 echo '</div>';
             }

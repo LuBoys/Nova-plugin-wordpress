@@ -1,5 +1,4 @@
 .draggable-container {
-    position: relative;
     width: 100%;
     height: 100vh;
     overflow: hidden;
@@ -8,5 +7,4 @@
 .draggable-element {
     position: absolute;
     cursor: move;
-    z-index: 10; /* Ajustez le z-index pour éviter la superposition indésirable */
 }
