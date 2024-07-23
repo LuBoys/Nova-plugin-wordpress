@@ -462,20 +462,22 @@ class Widget_Draggable extends Widget_Base {
     protected function render() {
         $settings = $this->get_settings_for_display();
         $content = '<div class="draggable-container">'; // Container
-
+    
         if ($settings['content_type'] == 'text') {
             $tag = $settings['html_tag'];
             $content .= '<' . $tag . ' class="draggable-element">' . esc_html($settings['text']) . '</' . $tag . '>';
         } elseif ($settings['content_type'] == 'image') {
             $content .= '<div class="draggable-element"><img src="' . esc_url($settings['image']['url']) . '" alt=""></div>';
         } elseif ($settings['content_type'] == 'icon') {
-            $icon_html = \Elementor\Icons_Manager::render_icon( $settings['icon'], [ 'aria-hidden' => 'true' ] );
-            $content .= '<div class="draggable-element">' . $icon_html . '</div>';
+            if (!empty($settings['icon']['value'])) {
+                $content .= '<div class="draggable-element"><i class="' . esc_attr($settings['icon']['value']) . '"></i></div>';
+            }
         }
-
+    
         $content .= '</div>';
         echo $content;
     }
+    
 }
 
 \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widget_Draggable());
