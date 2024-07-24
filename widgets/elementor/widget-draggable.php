@@ -470,13 +470,14 @@ class Widget_Draggable extends Widget_Base {
             $content .= '<div class="draggable-element"><img src="' . esc_url($settings['image']['url']) . '" alt=""></div>';
         } elseif ($settings['content_type'] == 'icon') {
             if (!empty($settings['icon']['value'])) {
-                $content .= '<div class="draggable-element"><i class="' . esc_attr($settings['icon']['value']) . '"></i></div>';
+                $content .= '<div class="draggable-element">' . \Elementor\Icons_Manager::render_icon($settings['icon'], ['aria-hidden' => 'true']) . '</div>';
             }
         }
     
         $content .= '</div>';
         echo $content;
     }
+    
     
 }
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Nova Widgets
- * Description: Une collection de widgets Elementor et Divi personnalisés, y compris des éléments glissants avec GSAP et plus encore, créés par <a href="https://nova-on.com" target="_blank">Nova web agency</a>.
+ * Description: Une collection de widgets Elementor personnalisés, y compris des éléments glissants avec GSAP et plus encore, créés par <a href="https://nova-on.com" target="_blank">Nova web agency</a>.
  * Version: 1.0
  * Author: Nova
  * License: GPLv2 or later
@@ -14,8 +14,9 @@ if (!defined('ABSPATH')) {
 
 // Enqueue scripts and styles
 function custom_widgets_enqueue_assets() {
-    // Common styles and scripts for both Elementor and Divi
+    // Common styles and scripts for Elementor
     wp_enqueue_style('custom-widgets-style', plugin_dir_url(__FILE__) . 'css/style.css');
+    wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
     wp_enqueue_script('gsap-js', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js', array(), null, true);
     wp_enqueue_script('gsap-draggable', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/Draggable.min.js', array('gsap-js'), null, true);
     wp_enqueue_script('custom-widgets-draggable-script', plugin_dir_url(__FILE__) . 'js/draggable.js', array('jquery', 'gsap-js', 'gsap-draggable'), null, true);
@@ -23,60 +24,27 @@ function custom_widgets_enqueue_assets() {
     wp_enqueue_script('custom-widgets-animated-text-script', plugin_dir_url(__FILE__) . 'js/animated-text.js', array('jquery', 'gsap-js'), null, true);
     wp_enqueue_script('custom-widgets-bouncing-text-script', plugin_dir_url(__FILE__) . 'js/bouncing-text.js', array('gsap-js'), null, true);
     wp_enqueue_script('custom-widgets-split-text-script', plugin_dir_url(__FILE__) . 'js/split-text.js', array('gsap-js'), null, true);
-
-    // Enqueue compiled scripts for Divi
-    wp_enqueue_script('custom-widgets-divi-script', plugin_dir_url(__FILE__) . 'dist/bundle.js', array(), null, true);
-
-    // Separate styles for Elementor and Divi
-    if (get_option('custom_widgets_elementor_enabled') === 'yes') {
-        wp_enqueue_style('custom-widgets-animated-text-style-elementor', plugin_dir_url(__FILE__) . 'css/elementor/animated-text.css');
-        wp_enqueue_style('custom-widgets-split-text-style-elementor', plugin_dir_url(__FILE__) . 'css/elementor/split-text.css');
-        wp_enqueue_style('custom-widgets-animated-image-gallery-style-elementor', plugin_dir_url(__FILE__) . 'css/elementor/animated-image-gallery.css');
-        wp_enqueue_style('custom-widgets-bouncing-text-style-elementor', plugin_dir_url(__FILE__) . 'css/elementor/bouncing-text.css');
-        wp_enqueue_style('custom-widgets-draggable-style-elementor', plugin_dir_url(__FILE__) . 'css/elementor/draggable.css');
-    }
-
-    if (get_option('custom_widgets_divi_enabled') === 'yes') {
-        wp_enqueue_style('custom-widgets-animated-text-style-divi', plugin_dir_url(__FILE__) . 'css/divi/animated-text.css');
-        wp_enqueue_style('custom-widgets-split-text-style-divi', plugin_dir_url(__FILE__) . 'css/divi/split-text.css');
-        wp_enqueue_style('custom-widgets-animated-image-gallery-style-divi', plugin_dir_url(__FILE__) . 'css/divi/animated-image-gallery.css');
-        wp_enqueue_style('custom-widgets-bouncing-text-style-divi', plugin_dir_url(__FILE__) . 'css/divi/bouncing-text.css');
-        wp_enqueue_style('custom-widgets-draggable-style-divi', plugin_dir_url(__FILE__) . 'css/divi/draggable.css');
-    }
 }
 add_action('wp_enqueue_scripts', 'custom_widgets_enqueue_assets');
 
-// Register the widgets for Elementor and Divi
+// Register the widgets for Elementor
 function register_custom_elementor_widgets($widgets_manager) {
-    if (get_option('custom_widgets_elementor_enabled') === 'yes') {
-        require_once(__DIR__ . '/widgets/elementor/widget-draggable.php');
-        $widgets_manager->register(new \Elementor\Widget_Draggable());
+    require_once(__DIR__ . '/widgets/elementor/widget-draggable.php');
+    $widgets_manager->register(new \Elementor\Widget_Draggable());
 
-        require_once(__DIR__ . '/widgets/elementor/widget-animated-image-gallery.php');
-        $widgets_manager->register(new \Elementor\Widget_Animated_Image_Gallery());
+    require_once(__DIR__ . '/widgets/elementor/widget-animated-image-gallery.php');
+    $widgets_manager->register(new \Elementor\Widget_Animated_Image_Gallery());
 
-        require_once(__DIR__ . '/widgets/elementor/widget-animated-text.php');
-        $widgets_manager->register(new \Elementor\Widget_Animated_Text());
+    require_once(__DIR__ . '/widgets/elementor/widget-animated-text.php');
+    $widgets_manager->register(new \Elementor\Widget_Animated_Text());
 
-        require_once(__DIR__ . '/widgets/elementor/widget-bouncing-text.php');
-        $widgets_manager->register(new \Elementor\Widget_Bouncing_Text());
+    require_once(__DIR__ . '/widgets/elementor/widget-bouncing-text.php');
+    $widgets_manager->register(new \Elementor\Widget_Bouncing_Text());
 
-        require_once(__DIR__ . '/widgets/elementor/widget-split-text.php');
-        $widgets_manager->register(new \Elementor\Widget_Split_Text());
-    }
+    require_once(__DIR__ . '/widgets/elementor/widget-split-text.php');
+    $widgets_manager->register(new \Elementor\Widget_Split_Text());
 }
 add_action('elementor/widgets/register', 'register_custom_elementor_widgets');
-
-function register_custom_divi_modules() {
-    if (get_option('custom_widgets_divi_enabled') === 'yes') {
-        require_once(__DIR__ . '/widgets/divi/DraggableModule.php');
-        require_once(__DIR__ . '/widgets/divi/AnimatedTextModule.php');
-        require_once(__DIR__ . '/widgets/divi/widget-animated-image-gallery.php');
-        require_once(__DIR__ . '/widgets/divi/widget-bouncing-text.php');
-        require_once(__DIR__ . '/widgets/divi/widget-split-text.php');
-    }
-}
-add_action('et_builder_ready', 'register_custom_divi_modules');
 
 // Add admin menu
 function custom_widgets_add_admin_menu() {
@@ -111,9 +79,6 @@ function custom_widgets_admin_page() {
 
         $elementor_enabled = isset($_POST['custom_widgets_elementor_enabled']) ? 'yes' : 'no';
         update_option('custom_widgets_elementor_enabled', $elementor_enabled);
-
-        $divi_enabled = isset($_POST['custom_widgets_divi_enabled']) ? 'yes' : 'no';
-        update_option('custom_widgets_divi_enabled', $divi_enabled);
     }
 
     $draggable_enabled = get_option('custom_widgets_draggable_enabled', 'no');
@@ -122,7 +87,6 @@ function custom_widgets_admin_page() {
     $bouncing_text_enabled = get_option('custom_widgets_bouncing_text_enabled', 'no');
     $split_text_enabled = get_option('custom_widgets_split_text_enabled', 'no');
     $elementor_enabled = get_option('custom_widgets_elementor_enabled', 'no');
-    $divi_enabled = get_option('custom_widgets_divi_enabled', 'no');
     ?>
     <div class="wrap custom-nova-settings">
         <h1>Paramètres de Nova Widgets</h1>
@@ -180,15 +144,6 @@ function custom_widgets_admin_page() {
                         <label for="custom_widgets_elementor_enabled">
                             <input type="checkbox" name="custom_widgets_elementor_enabled" id="custom_widgets_elementor_enabled" value="yes" <?php checked($elementor_enabled, 'yes'); ?> />
                             Activer les widgets pour Elementor.
-                        </label>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row">Activer pour Divi</th>
-                    <td>
-                        <label for="custom_widgets_divi_enabled">
-                            <input type="checkbox" name="custom_widgets_divi_enabled" id="custom_widgets_divi_enabled" value="yes" <?php checked($divi_enabled, 'yes'); ?> />
-                            Activer les widgets pour Divi.
                         </label>
                     </td>
                 </tr>
