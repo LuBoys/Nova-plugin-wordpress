@@ -16,7 +16,6 @@ if (!defined('ABSPATH')) {
 function custom_widgets_enqueue_assets() {
     // Common styles and scripts for Elementor
     wp_enqueue_style('custom-widgets-style', plugin_dir_url(__FILE__) . 'css/style.css');
-    wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
     wp_enqueue_script('gsap-js', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js', array(), null, true);
     wp_enqueue_script('gsap-draggable', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/Draggable.min.js', array('gsap-js'), null, true);
     wp_enqueue_script('custom-widgets-draggable-script', plugin_dir_url(__FILE__) . 'js/draggable.js', array('jquery', 'gsap-js', 'gsap-draggable'), null, true);
@@ -24,7 +23,9 @@ function custom_widgets_enqueue_assets() {
     wp_enqueue_script('custom-widgets-animated-text-script', plugin_dir_url(__FILE__) . 'js/animated-text.js', array('jquery', 'gsap-js'), null, true);
     wp_enqueue_script('custom-widgets-bouncing-text-script', plugin_dir_url(__FILE__) . 'js/bouncing-text.js', array('gsap-js'), null, true);
     wp_enqueue_script('custom-widgets-split-text-script', plugin_dir_url(__FILE__) . 'js/split-text.js', array('gsap-js'), null, true);
+    wp_enqueue_script('lottie-player', 'https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.6/lottie.min.js', array(), null, true); // Add Lottie script
 }
+
 add_action('wp_enqueue_scripts', 'custom_widgets_enqueue_assets');
 
 // Register the widgets for Elementor

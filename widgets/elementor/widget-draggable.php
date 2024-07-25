@@ -38,7 +38,6 @@ class Widget_Draggable extends Widget_Base {
                 'options' => [
                     'text' => __('Texte', 'custom-widgets'),
                     'image' => __('Image', 'custom-widgets'),
-                    'icon' => __('Icône', 'custom-widgets'),
                 ],
                 'default' => 'text',
             ]
@@ -88,21 +87,6 @@ class Widget_Draggable extends Widget_Base {
                 ],
                 'condition' => [
                     'content_type' => 'image',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'icon',
-            [
-                'label' => __('Icône', 'custom-widgets'),
-                'type' => \Elementor\Controls_Manager::ICONS,
-                'default' => [
-                    'value' => 'fas fa-star',
-                    'library' => 'solid',
-                ],
-                'condition' => [
-                    'content_type' => 'icon',
                 ],
             ]
         );
@@ -367,96 +351,6 @@ class Widget_Draggable extends Widget_Base {
         );
 
         $this->end_controls_section();
-
-        $this->start_controls_section(
-            'style_icon_section',
-            [
-                'label' => __('Icon', 'custom-widgets'),
-                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-                'condition' => [
-                    'content_type' => 'icon',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'icon_align',
-            [
-                'label' => __('Alignment', 'custom-widgets'),
-                'type' => \Elementor\Controls_Manager::CHOOSE,
-                'options' => [
-                    'left' => [
-                        'title' => __('Left', 'custom-widgets'),
-                        'icon' => 'eicon-text-align-left',
-                    ],
-                    'center' => [
-                        'title' => __('Center', 'custom-widgets'),
-                        'icon' => 'eicon-text-align-center',
-                    ],
-                    'right' => [
-                        'title' => __('Right', 'custom-widgets'),
-                        'icon' => 'eicon-text-align-right',
-                    ],
-                ],
-                'default' => 'center',
-                'selectors' => [
-                    '{{WRAPPER}} .draggable-element i' => 'text-align: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'icon_color',
-            [
-                'label' => __('Primary Color', 'custom-widgets'),
-                'type' => \Elementor\Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .draggable-element i' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_responsive_control(
-            'icon_size',
-            [
-                'label' => __('Size', 'custom-widgets'),
-                'type' => \Elementor\Controls_Manager::SLIDER,
-                'size_units' => ['px', 'em'],
-                'range' => [
-                    'px' => [
-                        'min' => 10,
-                        'max' => 300,
-                    ],
-                    'em' => [
-                        'min' => 1,
-                        'max' => 20,
-                    ],
-                ],
-                'selectors' => [
-                    '{{WRAPPER}} .draggable-element i' => 'font-size: {{SIZE}}{{UNIT}};',
-                ],
-            ]
-        );
-
-        $this->add_responsive_control(
-            'icon_rotate',
-            [
-                'label' => __('Rotation', 'custom-widgets'),
-                'type' => \Elementor\Controls_Manager::SLIDER,
-                'size_units' => ['deg'],
-                'range' => [
-                    'deg' => [
-                        'min' => 0,
-                        'max' => 360,
-                    ],
-                ],
-                'selectors' => [
-                    '{{WRAPPER}} .draggable-element i' => 'transform: rotate({{SIZE}}deg);',
-                ],
-            ]
-        );
-
-        $this->end_controls_section();
     }
 
     protected function render() {
@@ -468,17 +362,12 @@ class Widget_Draggable extends Widget_Base {
             $content .= '<' . $tag . ' class="draggable-element">' . esc_html($settings['text']) . '</' . $tag . '>';
         } elseif ($settings['content_type'] == 'image') {
             $content .= '<div class="draggable-element"><img src="' . esc_url($settings['image']['url']) . '" alt=""></div>';
-        } elseif ($settings['content_type'] == 'icon') {
-            if (!empty($settings['icon']['value'])) {
-                $content .= '<div class="draggable-element">' . \Elementor\Icons_Manager::render_icon($settings['icon'], ['aria-hidden' => 'true']) . '</div>';
-            }
         }
     
         $content .= '</div>';
         echo $content;
     }
-    
-    
 }
 
 \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widget_Draggable());
+?>
