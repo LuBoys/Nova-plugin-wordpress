@@ -23,9 +23,8 @@ function custom_widgets_enqueue_assets() {
     wp_enqueue_script('custom-widgets-animated-text-script', plugin_dir_url(__FILE__) . 'js/animated-text.js', array('jquery', 'gsap-js'), null, true);
     wp_enqueue_script('custom-widgets-bouncing-text-script', plugin_dir_url(__FILE__) . 'js/bouncing-text.js', array('gsap-js'), null, true);
     wp_enqueue_script('custom-widgets-split-text-script', plugin_dir_url(__FILE__) . 'js/split-text.js', array('gsap-js'), null, true);
-    wp_enqueue_script('lottie-player', 'https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.6/lottie.min.js', array(), null, true); // Add Lottie script
+    wp_enqueue_script('custom-widgets-slide-fade-script', plugin_dir_url(__FILE__) . 'js/slide-fade.js', array('gsap-js'), null, true);
 }
-
 add_action('wp_enqueue_scripts', 'custom_widgets_enqueue_assets');
 
 // Register the widgets for Elementor
@@ -44,6 +43,9 @@ function register_custom_elementor_widgets($widgets_manager) {
 
     require_once(__DIR__ . '/widgets/elementor/widget-split-text.php');
     $widgets_manager->register(new \Elementor\Widget_Split_Text());
+
+    require_once(__DIR__ . '/widgets/elementor/widget-slide-fade.php');
+    $widgets_manager->register(new \Elementor\Widget_Slide_Fade());
 }
 add_action('elementor/widgets/register', 'register_custom_elementor_widgets');
 
@@ -78,6 +80,9 @@ function custom_widgets_admin_page() {
         $split_text_enabled = isset($_POST['custom_widgets_split_text_enabled']) ? 'yes' : 'no';
         update_option('custom_widgets_split_text_enabled', $split_text_enabled);
 
+        $slide_fade_enabled = isset($_POST['custom_widgets_slide_fade_enabled']) ? 'yes' : 'no';
+        update_option('custom_widgets_slide_fade_enabled', $slide_fade_enabled);
+
         $elementor_enabled = isset($_POST['custom_widgets_elementor_enabled']) ? 'yes' : 'no';
         update_option('custom_widgets_elementor_enabled', $elementor_enabled);
     }
@@ -87,6 +92,7 @@ function custom_widgets_admin_page() {
     $animated_text_enabled = get_option('custom_widgets_animated_text_enabled', 'no');
     $bouncing_text_enabled = get_option('custom_widgets_bouncing_text_enabled', 'no');
     $split_text_enabled = get_option('custom_widgets_split_text_enabled', 'no');
+    $slide_fade_enabled = get_option('custom_widgets_slide_fade_enabled', 'no');
     $elementor_enabled = get_option('custom_widgets_elementor_enabled', 'no');
     ?>
     <div class="wrap custom-nova-settings">
@@ -136,6 +142,15 @@ function custom_widgets_admin_page() {
                         <label for="custom_widgets_split_text_enabled">
                             <input type="checkbox" name="custom_widgets_split_text_enabled" id="custom_widgets_split_text_enabled" value="yes" <?php checked($split_text_enabled, 'yes'); ?> />
                             Fractionne le texte en caractères individuels et les anime.
+                        </label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Widget Texte glissant et estompé (Slide and Fade)</th>
+                    <td>
+                        <label for="custom_widgets_slide_fade_enabled">
+                            <input type="checkbox" name="custom_widgets_slide_fade_enabled" id="custom_widgets_slide_fade_enabled" value="yes" <?php checked($slide_fade_enabled, 'yes'); ?> />
+                            Crée un texte qui glisse et disparaît progressivement.
                         </label>
                     </td>
                 </tr>

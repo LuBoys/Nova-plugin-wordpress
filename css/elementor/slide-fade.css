@@ -1,0 +1,9 @@
+.slide-fade-container {
+    display: inline-block;
+    overflow: hidden;
+}
+
+.slide-fade {
+    display: inline-block;
+    will-change: transform, opacity;
+}
