@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Nova Widgets
- * Description: Une collection de widgets Elementor personnalisés, y compris des éléments glissants avec GSAP et plus encore, créés par <a href="https://nova-on.com" target="_blank">Nova web agency</a>.
+ * Description: Une collection de widgets Elementor personnalisés, y compris des éléments modernes avec GSAP et plus encore, créés par <a href="https://nova-on.com" target="_blank">Nova web agency</a>.
  * Version: 1.0
  * Author: Nova
  * License: GPLv2 or later
@@ -17,13 +17,19 @@ function custom_widgets_enqueue_assets() {
     // Common styles and scripts for Elementor
     wp_enqueue_style('custom-widgets-style', plugin_dir_url(__FILE__) . 'css/style.css');
     wp_enqueue_script('gsap-js', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js', array(), null, true);
-    wp_enqueue_script('gsap-draggable', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/Draggable.min.js', array('gsap-js'), null, true);
-    wp_enqueue_script('custom-widgets-draggable-script', plugin_dir_url(__FILE__) . 'js/draggable.js', array('jquery', 'gsap-js', 'gsap-draggable'), null, true);
+    wp_enqueue_script('custom-widgets-draggable-script', plugin_dir_url(__FILE__) . 'js/draggable.js', array('jquery', 'gsap-js'), null, true);
     wp_enqueue_script('custom-widgets-animated-image-gallery-script', plugin_dir_url(__FILE__) . 'js/animated-image-gallery.js', array('jquery', 'gsap-js'), null, true);
     wp_enqueue_script('custom-widgets-animated-text-script', plugin_dir_url(__FILE__) . 'js/animated-text.js', array('jquery', 'gsap-js'), null, true);
     wp_enqueue_script('custom-widgets-bouncing-text-script', plugin_dir_url(__FILE__) . 'js/bouncing-text.js', array('gsap-js'), null, true);
     wp_enqueue_script('custom-widgets-split-text-script', plugin_dir_url(__FILE__) . 'js/split-text.js', array('gsap-js'), null, true);
+
+    // Enqueue scripts and styles for the Slide Fade widget
+    wp_enqueue_style('custom-widgets-slide-fade-style', plugin_dir_url(__FILE__) . 'css/slide-fade.css');
     wp_enqueue_script('custom-widgets-slide-fade-script', plugin_dir_url(__FILE__) . 'js/slide-fade.js', array('gsap-js'), null, true);
+
+    // Enqueue scripts and styles for the Shrink Grow widget
+    wp_enqueue_style('custom-widgets-shrink-grow-style', plugin_dir_url(__FILE__) . 'css/shrink-grow.css');
+    wp_enqueue_script('custom-widgets-shrink-grow-script', plugin_dir_url(__FILE__) . 'js/shrink-grow.js', array('gsap-js'), null, true);
 }
 add_action('wp_enqueue_scripts', 'custom_widgets_enqueue_assets');
 
@@ -46,6 +52,9 @@ function register_custom_elementor_widgets($widgets_manager) {
 
     require_once(__DIR__ . '/widgets/elementor/widget-slide-fade.php');
     $widgets_manager->register(new \Elementor\Widget_Slide_Fade());
+
+    require_once(__DIR__ . '/widgets/elementor/widget-shrink-grow.php');
+    $widgets_manager->register(new \Elementor\Widget_Shrink_Grow());
 }
 add_action('elementor/widgets/register', 'register_custom_elementor_widgets');
 
@@ -83,6 +92,9 @@ function custom_widgets_admin_page() {
         $slide_fade_enabled = isset($_POST['custom_widgets_slide_fade_enabled']) ? 'yes' : 'no';
         update_option('custom_widgets_slide_fade_enabled', $slide_fade_enabled);
 
+        $shrink_grow_enabled = isset($_POST['custom_widgets_shrink_grow_enabled']) ? 'yes' : 'no';
+        update_option('custom_widgets_shrink_grow_enabled', $shrink_grow_enabled);
+
         $elementor_enabled = isset($_POST['custom_widgets_elementor_enabled']) ? 'yes' : 'no';
         update_option('custom_widgets_elementor_enabled', $elementor_enabled);
     }
@@ -93,6 +105,7 @@ function custom_widgets_admin_page() {
     $bouncing_text_enabled = get_option('custom_widgets_bouncing_text_enabled', 'no');
     $split_text_enabled = get_option('custom_widgets_split_text_enabled', 'no');
     $slide_fade_enabled = get_option('custom_widgets_slide_fade_enabled', 'no');
+    $shrink_grow_enabled = get_option('custom_widgets_shrink_grow_enabled', 'no');
     $elementor_enabled = get_option('custom_widgets_elementor_enabled', 'no');
     ?>
     <div class="wrap custom-nova-settings">
@@ -146,11 +159,20 @@ function custom_widgets_admin_page() {
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row">Widget Texte glissant et estompé (Slide and Fade)</th>
+                    <th scope="row">Widget Slide Fade (Slide Fade)</th>
                     <td>
                         <label for="custom_widgets_slide_fade_enabled">
                             <input type="checkbox" name="custom_widgets_slide_fade_enabled" id="custom_widgets_slide_fade_enabled" value="yes" <?php checked($slide_fade_enabled, 'yes'); ?> />
-                            Crée un texte qui glisse et disparaît progressivement.
+                            Anime le texte avec un effet de fondu glissé.
+                        </label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Widget Shrink Grow (Shrink Grow)</th>
+                    <td>
+                        <label for="custom_widgets_shrink_grow_enabled">
+                            <input type="checkbox" name="custom_widgets_shrink_grow_enabled" id="custom_widgets_shrink_grow_enabled" value="yes" <?php checked($shrink_grow_enabled, 'yes'); ?> />
+                            Anime le texte avec un effet de réduction et de croissance.
                         </label>
                     </td>
                 </tr>
@@ -219,4 +241,3 @@ function custom_widgets_handle_feedback_submission() {
     }
 }
 add_action('admin_post_custom_widgets_handle_feedback', 'custom_widgets_handle_feedback_submission');
-?>

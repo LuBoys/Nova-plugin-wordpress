@@ -3,18 +3,18 @@ namespace Elementor;
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
-class Widget_Slide_Fade extends Widget_Base {
+class Widget_Shrink_Grow extends Widget_Base {
 
     public function get_name() {
-        return 'slide_fade';
+        return 'shrink_grow';
     }
 
     public function get_title() {
-        return __('Slide and Fade', 'custom-widgets');
+        return __('Shrink and Grow', 'custom-widgets');
     }
 
     public function get_icon() {
-        return 'eicon-slider-full-screen';
+        return 'eicon-resize-horizontal';
     }
 
     public function get_categories() {
@@ -31,11 +31,11 @@ class Widget_Slide_Fade extends Widget_Base {
         );
 
         $this->add_control(
-            'content',
+            'text',
             [
-                'label' => __('Content', 'custom-widgets'),
+                'label' => __('Text', 'custom-widgets'),
                 'type' => \Elementor\Controls_Manager::WYSIWYG,
-                'default' => __('Your content here', 'custom-widgets'),
+                'default' => __('Shrink and Grow', 'custom-widgets'),
             ]
         );
 
@@ -50,9 +50,28 @@ class Widget_Slide_Fade extends Widget_Base {
         );
 
         $this->add_control(
-            'alignment',
+            'text_color',
             [
-                'label' => __('Alignment', 'custom-widgets'),
+                'label' => __('Text Color', 'custom-widgets'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .shrink-grow' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'typography',
+                'selector' => '{{WRAPPER}} .shrink-grow',
+            ]
+        );
+
+        $this->add_control(
+            'text_align',
+            [
+                'label' => __('Text Alignment', 'custom-widgets'),
                 'type' => \Elementor\Controls_Manager::CHOOSE,
                 'options' => [
                     'left' => [
@@ -70,27 +89,8 @@ class Widget_Slide_Fade extends Widget_Base {
                 ],
                 'default' => 'center',
                 'selectors' => [
-                    '{{WRAPPER}} .slide-fade-content' => 'text-align: {{VALUE}};',
+                    '{{WRAPPER}} .shrink-grow-container' => 'text-align: {{VALUE}};',
                 ],
-            ]
-        );
-
-        $this->add_control(
-            'color',
-            [
-                'label' => __('Color', 'custom-widgets'),
-                'type' => \Elementor\Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .slide-fade-content' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            \Elementor\Group_Control_Typography::get_type(),
-            [
-                'name' => 'typography',
-                'selector' => '{{WRAPPER}} .slide-fade-content',
             ]
         );
 
@@ -100,12 +100,22 @@ class Widget_Slide_Fade extends Widget_Base {
     protected function render() {
         $settings = $this->get_settings_for_display();
         ?>
-        <div class="slide-fade slide-fade-content">
-            <?php echo $settings['content']; ?>
+        <div class="shrink-grow-container">
+            <div class="shrink-grow"><?php echo $settings['text']; ?></div>
+        </div>
+        <?php
+    }
+
+    protected function _content_template() {
+        ?>
+        <#
+        var text = settings.text;
+        #>
+        <div class="shrink-grow-container">
+            <div class="shrink-grow">{{{ text }}}</div>
         </div>
         <?php
     }
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widget_Slide_Fade());
-?>
+\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widget_Shrink_Grow());
