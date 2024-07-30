@@ -1,0 +1,10 @@
+.glitch-text-element {
+    display: inline-block;
+    font-size: 2em;
+    position: relative;
+    overflow: hidden;
+}
+
+.glitch-text-element span {
+    display: inline-block;
+}

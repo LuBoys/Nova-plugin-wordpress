@@ -30,6 +30,10 @@ function custom_widgets_enqueue_assets() {
     // Enqueue scripts and styles for the Shrink Grow widget
     wp_enqueue_style('custom-widgets-shrink-grow-style', plugin_dir_url(__FILE__) . 'css/shrink-grow.css');
     wp_enqueue_script('custom-widgets-shrink-grow-script', plugin_dir_url(__FILE__) . 'js/shrink-grow.js', array('gsap-js'), null, true);
+
+    // Enqueue scripts and styles for the Glitch Text widget
+    wp_enqueue_style('custom-widgets-glitch-text-style', plugin_dir_url(__FILE__) . 'css/glitch-text.css');
+    wp_enqueue_script('custom-widgets-glitch-text-script', plugin_dir_url(__FILE__) . 'js/glitch-text.js', array('gsap-js'), null, true);
 }
 add_action('wp_enqueue_scripts', 'custom_widgets_enqueue_assets');
 
@@ -55,6 +59,9 @@ function register_custom_elementor_widgets($widgets_manager) {
 
     require_once(__DIR__ . '/widgets/elementor/widget-shrink-grow.php');
     $widgets_manager->register(new \Elementor\Widget_Shrink_Grow());
+
+    require_once(__DIR__ . '/widgets/elementor/widget-glitch-text.php');
+    $widgets_manager->register(new \Elementor\Widget_Glitch_Text());
 }
 add_action('elementor/widgets/register', 'register_custom_elementor_widgets');
 
@@ -95,6 +102,9 @@ function custom_widgets_admin_page() {
         $shrink_grow_enabled = isset($_POST['custom_widgets_shrink_grow_enabled']) ? 'yes' : 'no';
         update_option('custom_widgets_shrink_grow_enabled', $shrink_grow_enabled);
 
+        $glitch_text_enabled = isset($_POST['custom_widgets_glitch_text_enabled']) ? 'yes' : 'no';
+        update_option('custom_widgets_glitch_text_enabled', $glitch_text_enabled);
+
         $elementor_enabled = isset($_POST['custom_widgets_elementor_enabled']) ? 'yes' : 'no';
         update_option('custom_widgets_elementor_enabled', $elementor_enabled);
     }
@@ -106,6 +116,7 @@ function custom_widgets_admin_page() {
     $split_text_enabled = get_option('custom_widgets_split_text_enabled', 'no');
     $slide_fade_enabled = get_option('custom_widgets_slide_fade_enabled', 'no');
     $shrink_grow_enabled = get_option('custom_widgets_shrink_grow_enabled', 'no');
+    $glitch_text_enabled = get_option('custom_widgets_glitch_text_enabled', 'no');
     $elementor_enabled = get_option('custom_widgets_elementor_enabled', 'no');
     ?>
     <div class="wrap custom-nova-settings">
@@ -173,6 +184,15 @@ function custom_widgets_admin_page() {
                         <label for="custom_widgets_shrink_grow_enabled">
                             <input type="checkbox" name="custom_widgets_shrink_grow_enabled" id="custom_widgets_shrink_grow_enabled" value="yes" <?php checked($shrink_grow_enabled, 'yes'); ?> />
                             Anime le texte avec un effet de réduction et de croissance.
+                        </label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Widget Glitch Text (Glitch Text)</th>
+                    <td>
+                        <label for="custom_widgets_glitch_text_enabled">
+                            <input type="checkbox" name="custom_widgets_glitch_text_enabled" id="custom_widgets_glitch_text_enabled" value="yes" <?php checked($glitch_text_enabled, 'yes'); ?> />
+                            Anime le texte avec un effet de glitch moderne.
                         </label>
                     </td>
                 </tr>
