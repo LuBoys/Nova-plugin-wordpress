@@ -1,0 +1,8 @@
+.scroll-animation-container {
+    overflow: hidden;
+}
+
+.scroll-animation-text {
+    font-size: 2em;
+    opacity: 0;
+}

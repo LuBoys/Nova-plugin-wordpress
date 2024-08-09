@@ -38,6 +38,19 @@ function custom_widgets_enqueue_assets() {
     // Enqueue scripts and styles for the Wave Text widget
     wp_enqueue_style('custom-widgets-wave-text-style', plugin_dir_url(__FILE__) . 'css/wave-style.css');
     wp_enqueue_script('custom-widgets-wave-text-script', plugin_dir_url(__FILE__) . 'js/wave-text.js', array('gsap-js'), null, true);
+
+    // Enqueue scripts and styles for the Scroll Animation widget
+    wp_enqueue_style('custom-widgets-scroll-animation-style', plugin_dir_url(__FILE__) . 'css/scroll-animation.css');
+    wp_enqueue_script('scrolltrigger-js', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js', array('gsap-js'), null, true);
+    wp_enqueue_script('custom-widgets-scroll-animation-script', plugin_dir_url(__FILE__) . 'js/scroll-animation.js', array('gsap-js', 'scrolltrigger-js'), null, true);
+
+    // Enqueue scripts and styles for the Parallax widget
+    wp_enqueue_style('custom-widgets-parallax-style', plugin_dir_url(__FILE__) . 'css/parallax.css');
+    wp_enqueue_script('custom-widgets-parallax-script', plugin_dir_url(__FILE__) . 'js/parallax.js', array('jquery'), null, true);
+
+    // Enqueue scripts and styles for the Reveal Blur widget
+    wp_enqueue_style('custom-widgets-reveal-blur-style', plugin_dir_url(__FILE__) . 'css/reveal-blur.css');
+    wp_enqueue_script('custom-widgets-reveal-blur-script', plugin_dir_url(__FILE__) . 'js/reveal-blur.js', array('gsap-js', 'scrolltrigger-js'), null, true);
 }
 add_action('wp_enqueue_scripts', 'custom_widgets_enqueue_assets');
 
@@ -69,6 +82,15 @@ function register_custom_elementor_widgets($widgets_manager) {
 
     require_once(__DIR__ . '/widgets/elementor/widget-wave-text.php');
     $widgets_manager->register(new \Elementor\Widget_Wave_Text());
+
+    require_once(__DIR__ . '/widgets/elementor/widget-scroll-animation.php');
+    $widgets_manager->register(new \Elementor\Widget_Scroll_Animation());
+
+    require_once(__DIR__ . '/widgets/elementor/widget-parallax.php');
+    $widgets_manager->register(new \Elementor\Widget_Parallax());
+
+    require_once(__DIR__ . '/widgets/elementor/widget-reveal-blur.php');
+    $widgets_manager->register(new \Elementor\Widget_Reveal_Blur());
 }
 add_action('elementor/widgets/register', 'register_custom_elementor_widgets');
 
@@ -115,6 +137,15 @@ function custom_widgets_admin_page() {
         $wave_text_enabled = isset($_POST['custom_widgets_wave_text_enabled']) ? 'yes' : 'no';
         update_option('custom_widgets_wave_text_enabled', $wave_text_enabled);
 
+        $scroll_animation_enabled = isset($_POST['custom_widgets_scroll_animation_enabled']) ? 'yes' : 'no';
+        update_option('custom_widgets_scroll_animation_enabled', $scroll_animation_enabled);
+
+        $parallax_enabled = isset($_POST['custom_widgets_parallax_enabled']) ? 'yes' : 'no';
+        update_option('custom_widgets_parallax_enabled', $parallax_enabled);
+
+        $reveal_blur_enabled = isset($_POST['custom_widgets_reveal_blur_enabled']) ? 'yes' : 'no';
+        update_option('custom_widgets_reveal_blur_enabled', $reveal_blur_enabled);
+
         $elementor_enabled = isset($_POST['custom_widgets_elementor_enabled']) ? 'yes' : 'no';
         update_option('custom_widgets_elementor_enabled', $elementor_enabled);
     }
@@ -128,6 +159,9 @@ function custom_widgets_admin_page() {
     $shrink_grow_enabled = get_option('custom_widgets_shrink_grow_enabled', 'no');
     $glitch_text_enabled = get_option('custom_widgets_glitch_text_enabled', 'no');
     $wave_text_enabled = get_option('custom_widgets_wave_text_enabled', 'no');
+    $scroll_animation_enabled = get_option('custom_widgets_scroll_animation_enabled', 'no');
+    $parallax_enabled = get_option('custom_widgets_parallax_enabled', 'no');
+    $reveal_blur_enabled = get_option('custom_widgets_reveal_blur_enabled', 'no');
     $elementor_enabled = get_option('custom_widgets_elementor_enabled', 'no');
     ?>
     <div class="wrap custom-nova-settings">
@@ -213,6 +247,33 @@ function custom_widgets_admin_page() {
                         <label for="custom_widgets_wave_text_enabled">
                             <input type="checkbox" name="custom_widgets_wave_text_enabled" id="custom_widgets_wave_text_enabled" value="yes" <?php checked($wave_text_enabled, 'yes'); ?> />
                             Anime le texte avec un effet de vague.
+                        </label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Widget Scroll Animation (Scroll Animation)</th>
+                    <td>
+                        <label for="custom_widgets_scroll_animation_enabled">
+                            <input type="checkbox" name="custom_widgets_scroll_animation_enabled" id="custom_widgets_scroll_animation_enabled" value="yes" <?php checked($scroll_animation_enabled, 'yes'); ?> />
+                            Anime les éléments au défilement.
+                        </label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Widget Parallax (Parallax)</th>
+                    <td>
+                        <label for="custom_widgets_parallax_enabled">
+                            <input type="checkbox" name="custom_widgets_parallax_enabled" id="custom_widgets_parallax_enabled" value="yes" <?php checked($parallax_enabled, 'yes'); ?> />
+                            Crée un effet de parallaxe sur les éléments.
+                        </label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Widget Reveal Blur (Reveal Blur)</th>
+                    <td>
+                        <label for="custom_widgets_reveal_blur_enabled">
+                            <input type="checkbox" name="custom_widgets_reveal_blur_enabled" id="custom_widgets_reveal_blur_enabled" value="yes" <?php checked($reveal_blur_enabled, 'yes'); ?> />
+                            Crée un effet de révélation avec flou.
                         </label>
                     </td>
                 </tr>

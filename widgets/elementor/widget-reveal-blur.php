@@ -3,18 +3,18 @@ namespace Elementor;
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
-class Widget_Glitch_Text extends Widget_Base {
+class Widget_Reveal_Blur extends Widget_Base {
 
     public function get_name() {
-        return 'glitch_text';
+        return 'reveal_blur';
     }
 
     public function get_title() {
-        return __('Glitch Text with Rotation', 'custom-widgets');
+        return __('Reveal and Blur', 'custom-widgets');
     }
 
     public function get_icon() {
-        return 'eicon-animated-headline';
+        return 'eicon-animation';
     }
 
     public function get_categories() {
@@ -22,7 +22,6 @@ class Widget_Glitch_Text extends Widget_Base {
     }
 
     protected function _register_controls() {
-        // Section de contenu
         $this->start_controls_section(
             'content_section',
             [
@@ -32,30 +31,34 @@ class Widget_Glitch_Text extends Widget_Base {
         );
 
         $this->add_control(
-            'texts',
+            'text',
             [
-                'label' => __('Textes à faire défiler', 'custom-widgets'),
-                'type' => \Elementor\Controls_Manager::TEXTAREA,
-                'default' => __('Premier texte, Deuxième texte, Troisième texte', 'custom-widgets'),
-                'description' => __('Entrez les textes séparés par des virgules.', 'custom-widgets'),
+                'label' => __('Text', 'custom-widgets'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'default' => __('Reveal and Blur Effect', 'custom-widgets'),
             ]
         );
 
         $this->add_control(
-            'rotation_speed',
+            'blur_amount',
             [
-                'label' => __('Vitesse de rotation (secondes)', 'custom-widgets'),
-                'type' => \Elementor\Controls_Manager::NUMBER,
-                'min' => 1,
-                'max' => 10,
-                'step' => 1,
-                'default' => 3,
+                'label' => __('Blur Amount (px)', 'custom-widgets'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'range' => [
+                    'px' => [
+                        'min' => 0,
+                        'max' => 20,
+                        'step' => 1,
+                    ],
+                ],
+                'default' => [
+                    'size' => 10,
+                ],
             ]
         );
 
         $this->end_controls_section();
 
-        // Section de style
         $this->start_controls_section(
             'style_section',
             [
@@ -70,7 +73,7 @@ class Widget_Glitch_Text extends Widget_Base {
                 'label' => __('Text Color', 'custom-widgets'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .glitch-text' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .reveal-blur-text' => 'color: {{VALUE}};',
                 ],
             ]
         );
@@ -79,7 +82,7 @@ class Widget_Glitch_Text extends Widget_Base {
             \Elementor\Group_Control_Typography::get_type(),
             [
                 'name' => 'typography',
-                'selector' => '{{WRAPPER}} .glitch-text',
+                'selector' => '{{WRAPPER}} .reveal-blur-text',
             ]
         );
 
@@ -88,15 +91,12 @@ class Widget_Glitch_Text extends Widget_Base {
 
     protected function render() {
         $settings = $this->get_settings_for_display();
-        $texts = explode(',', $settings['texts']);
-        $rotation_speed = $settings['rotation_speed'];
-
-        echo '<div class="glitch-text-container">';
-        foreach ($texts as $index => $text) {
-            echo '<span class="glitch-text" data-index="' . $index . '" data-speed="' . esc_attr($rotation_speed) . '">' . esc_html($text) . '</span>';
-        }
-        echo '</div>';
+        ?>
+        <div class="reveal-blur-text" data-blur-amount="<?php echo esc_attr($settings['blur_amount']['size']); ?>">
+            <?php echo esc_html($settings['text']); ?>
+        </div>
+        <?php
     }
 }
 
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widget_Glitch_Text());
+\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Widget_Reveal_Blur());

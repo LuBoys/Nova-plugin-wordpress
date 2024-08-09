@@ -1,0 +1,5 @@
+.reveal-blur-text {
+    display: inline-block;
+    will-change: opacity, filter;
+    transition: opacity 0.6s ease, filter 0.6s ease;
+}
