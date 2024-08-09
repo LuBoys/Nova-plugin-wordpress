@@ -1,9 +1,0 @@
-.shrink-grow-container {
-    display: inline-block;
-    text-align: center;
-}
-
-.shrink-grow {
-    display: inline-block;
-    will-change: transform;
-}
