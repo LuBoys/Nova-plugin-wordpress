@@ -3,18 +3,18 @@ namespace Elementor;
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
-class Widget_Glitch_Text extends Widget_Base {
+class Widget_Wave_Text extends Widget_Base {
 
     public function get_name() {
-        return 'glitch_text';
+        return 'wave_text';
     }
 
     public function get_title() {
-        return __('Glitch Text', 'custom-widgets');
+        return __('Wave Text', 'custom-widgets');
     }
 
     public function get_icon() {
-        return 'eicon-animation';
+        return 'eicon-animation-text';
     }
 
     public function get_categories() {
@@ -34,23 +34,18 @@ class Widget_Glitch_Text extends Widget_Base {
             'text',
             [
                 'label' => __('Text', 'custom-widgets'),
-                'type' => \Elementor\Controls_Manager::WYSIWYG,
-                'default' => __('Glitch Text Effect', 'custom-widgets'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'default' => __('Wave Text Effect', 'custom-widgets'),
             ]
         );
 
         $this->add_control(
-            'glitch_speed',
+            'wave_speed',
             [
-                'label' => __('Glitch Speed', 'custom-widgets'),
+                'label' => __('Wave Speed', 'custom-widgets'),
                 'type' => \Elementor\Controls_Manager::SLIDER,
-                'size_units' => ['s', 'ms'],
+                'size_units' => ['s'],
                 'range' => [
-                    'ms' => [
-                        'min' => 10,
-                        'max' => 500,
-                        'step' => 10,
-                    ],
                     's' => [
                         'min' => 0.1,
                         'max' => 5,
@@ -58,8 +53,8 @@ class Widget_Glitch_Text extends Widget_Base {
                     ],
                 ],
                 'default' => [
-                    'unit' => 'ms',
-                    'size' => 100,
+                    'unit' => 's',
+                    'size' => 1,
                 ],
             ]
         );
@@ -80,8 +75,16 @@ class Widget_Glitch_Text extends Widget_Base {
                 'label' => __('Text Color', 'custom-widgets'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .glitch-text-element' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .wave-text-element' => 'color: {{VALUE}};',
                 ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'typography',
+                'selector' => '{{WRAPPER}} .wave-text-element',
             ]
         );
 
@@ -90,10 +93,9 @@ class Widget_Glitch_Text extends Widget_Base {
 
     protected function render() {
         $settings = $this->get_settings_for_display();
-        $speed = !empty($settings['glitch_speed']['size']) ? $settings['glitch_speed']['size'] : 100;
-        $unit = !empty($settings['glitch_speed']['unit']) ? $settings['glitch_speed']['unit'] : 'ms';
+        $speed = !empty($settings['wave_speed']['size']) ? $settings['wave_speed']['size'] : 1;
         ?>
-        <div class="glitch-text-element" data-speed="<?php echo esc_attr($speed); ?>" data-unit="<?php echo esc_attr($unit); ?>">
+        <div class="wave-text-element" data-speed="<?php echo esc_attr($speed); ?>">
             <?php echo $settings['text']; ?>
         </div>
         <?php

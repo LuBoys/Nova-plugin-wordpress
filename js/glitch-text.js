@@ -12,6 +12,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         const spans = element.querySelectorAll('span');
+        const speed = parseFloat(element.getAttribute('data-speed')) || 100;
+        const unit = element.getAttribute('data-unit') || 'ms';
+        const duration = unit === 's' ? speed : speed / 1000;
+
         gsap.fromTo(spans, {
             opacity: 1,
             x: 0,
@@ -24,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
             y: () => gsap.utils.random(-20, 20),
             skewX: () => gsap.utils.random(-10, 10),
             skewY: () => gsap.utils.random(-10, 10),
-            duration: 0.1,
+            duration: duration,
             ease: 'none',
             stagger: 0.02,
             repeat: -1,

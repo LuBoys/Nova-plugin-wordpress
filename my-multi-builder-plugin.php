@@ -34,6 +34,10 @@ function custom_widgets_enqueue_assets() {
     // Enqueue scripts and styles for the Glitch Text widget
     wp_enqueue_style('custom-widgets-glitch-text-style', plugin_dir_url(__FILE__) . 'css/glitch-text.css');
     wp_enqueue_script('custom-widgets-glitch-text-script', plugin_dir_url(__FILE__) . 'js/glitch-text.js', array('gsap-js'), null, true);
+
+    // Enqueue scripts and styles for the Wave Text widget
+    wp_enqueue_style('custom-widgets-wave-text-style', plugin_dir_url(__FILE__) . 'css/wave-style.css');
+    wp_enqueue_script('custom-widgets-wave-text-script', plugin_dir_url(__FILE__) . 'js/wave-text.js', array('gsap-js'), null, true);
 }
 add_action('wp_enqueue_scripts', 'custom_widgets_enqueue_assets');
 
@@ -62,6 +66,9 @@ function register_custom_elementor_widgets($widgets_manager) {
 
     require_once(__DIR__ . '/widgets/elementor/widget-glitch-text.php');
     $widgets_manager->register(new \Elementor\Widget_Glitch_Text());
+
+    require_once(__DIR__ . '/widgets/elementor/widget-wave-text.php');
+    $widgets_manager->register(new \Elementor\Widget_Wave_Text());
 }
 add_action('elementor/widgets/register', 'register_custom_elementor_widgets');
 
@@ -105,6 +112,9 @@ function custom_widgets_admin_page() {
         $glitch_text_enabled = isset($_POST['custom_widgets_glitch_text_enabled']) ? 'yes' : 'no';
         update_option('custom_widgets_glitch_text_enabled', $glitch_text_enabled);
 
+        $wave_text_enabled = isset($_POST['custom_widgets_wave_text_enabled']) ? 'yes' : 'no';
+        update_option('custom_widgets_wave_text_enabled', $wave_text_enabled);
+
         $elementor_enabled = isset($_POST['custom_widgets_elementor_enabled']) ? 'yes' : 'no';
         update_option('custom_widgets_elementor_enabled', $elementor_enabled);
     }
@@ -117,6 +127,7 @@ function custom_widgets_admin_page() {
     $slide_fade_enabled = get_option('custom_widgets_slide_fade_enabled', 'no');
     $shrink_grow_enabled = get_option('custom_widgets_shrink_grow_enabled', 'no');
     $glitch_text_enabled = get_option('custom_widgets_glitch_text_enabled', 'no');
+    $wave_text_enabled = get_option('custom_widgets_wave_text_enabled', 'no');
     $elementor_enabled = get_option('custom_widgets_elementor_enabled', 'no');
     ?>
     <div class="wrap custom-nova-settings">
@@ -197,6 +208,15 @@ function custom_widgets_admin_page() {
                     </td>
                 </tr>
                 <tr valign="top">
+                    <th scope="row">Widget Wave Text (Wave Text)</th>
+                    <td>
+                        <label for="custom_widgets_wave_text_enabled">
+                            <input type="checkbox" name="custom_widgets_wave_text_enabled" id="custom_widgets_wave_text_enabled" value="yes" <?php checked($wave_text_enabled, 'yes'); ?> />
+                            Anime le texte avec un effet de vague.
+                        </label>
+                    </td>
+                </tr>
+                <tr valign="top">
                     <th scope="row">Activer pour Elementor</th>
                     <td>
                         <label for="custom_widgets_elementor_enabled">
@@ -261,3 +281,4 @@ function custom_widgets_handle_feedback_submission() {
     }
 }
 add_action('admin_post_custom_widgets_handle_feedback', 'custom_widgets_handle_feedback_submission');
+?>
