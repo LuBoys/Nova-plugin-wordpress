@@ -17,13 +17,11 @@ function custom_widgets_enqueue_assets() {
     // Common styles and scripts for Elementor
     wp_enqueue_style('custom-widgets-style', plugin_dir_url(__FILE__) . 'css/style.css');
     wp_enqueue_script('gsap-js', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js', array(), null, true);
+    
+    // Enqueue scripts for existing widgets
     wp_enqueue_script('custom-widgets-draggable-script', plugin_dir_url(__FILE__) . 'js/draggable.js', array('jquery', 'gsap-js'), null, true);
     wp_enqueue_script('custom-widgets-bouncing-text-script', plugin_dir_url(__FILE__) . 'js/bouncing-text.js', array('gsap-js'), null, true);
     wp_enqueue_script('custom-widgets-split-text-script', plugin_dir_url(__FILE__) . 'js/split-text.js', array('gsap-js'), null, true);
-
-    // Enqueue scripts and styles for the Slide Fade widget
-    wp_enqueue_style('custom-widgets-slide-fade-style', plugin_dir_url(__FILE__) . 'css/slide-fade.css');
-    wp_enqueue_script('custom-widgets-slide-fade-script', plugin_dir_url(__FILE__) . 'js/slide-fade.js', array('gsap-js'), null, true);
 
     wp_enqueue_style('custom-widgets-scroll-animation-style', plugin_dir_url(__FILE__) . 'css/scroll-animation.css');
     wp_enqueue_script('scrolltrigger-js', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js', array('gsap-js'), null, true);
@@ -36,6 +34,14 @@ function custom_widgets_enqueue_assets() {
     // Enqueue scripts and styles for the Reveal Blur widget
     wp_enqueue_style('custom-widgets-reveal-blur-style', plugin_dir_url(__FILE__) . 'css/reveal-blur.css');
     wp_enqueue_script('custom-widgets-reveal-blur-script', plugin_dir_url(__FILE__) . 'js/reveal-blur.js', array('gsap-js', 'scrolltrigger-js'), null, true);
+
+    // Enqueue scripts and styles for the Hover Animation widget
+    wp_enqueue_style('custom-widgets-hover-animation-style', plugin_dir_url(__FILE__) . 'css/hover-animation.css');
+    wp_enqueue_script('custom-widgets-hover-animation-script', plugin_dir_url(__FILE__) . 'js/hover-animation.js', array('gsap-js'), null, true);
+
+    // Enqueue scripts and styles for the Scroll Reveal widget
+    wp_enqueue_style('custom-widgets-scroll-reveal-style', plugin_dir_url(__FILE__) . 'css/scroll-reveal.css');
+    wp_enqueue_script('custom-widgets-scroll-reveal-script', plugin_dir_url(__FILE__) . 'js/scroll-reveal.js', array('gsap-js', 'scrolltrigger-js'), null, true);
 }
 add_action('wp_enqueue_scripts', 'custom_widgets_enqueue_assets');
 
@@ -50,9 +56,6 @@ function register_custom_elementor_widgets($widgets_manager) {
     require_once(__DIR__ . '/widgets/elementor/widget-split-text.php');
     $widgets_manager->register(new \Elementor\Widget_Split_Text());
 
-    require_once(__DIR__ . '/widgets/elementor/widget-slide-fade.php');
-    $widgets_manager->register(new \Elementor\Widget_Slide_Fade());
-
     require_once(__DIR__ . '/widgets/elementor/widget-scroll-animation.php');
     $widgets_manager->register(new \Elementor\Widget_Scroll_Animation());
 
@@ -61,6 +64,12 @@ function register_custom_elementor_widgets($widgets_manager) {
 
     require_once(__DIR__ . '/widgets/elementor/widget-reveal-blur.php');
     $widgets_manager->register(new \Elementor\Widget_Reveal_Blur());
+
+    require_once(__DIR__ . '/widgets/elementor/widget-hover-animation.php');
+    $widgets_manager->register(new \Elementor\Widget_Hover_Animation());
+
+    require_once(__DIR__ . '/widgets/elementor/widget-scroll-reveal.php');
+    $widgets_manager->register(new \Elementor\Widget_Scroll_Reveal());
 }
 add_action('elementor/widgets/register', 'register_custom_elementor_widgets');
 
@@ -89,9 +98,6 @@ function custom_widgets_admin_page() {
         $split_text_enabled = isset($_POST['custom_widgets_split_text_enabled']) ? 'yes' : 'no';
         update_option('custom_widgets_split_text_enabled', $split_text_enabled);
 
-        $slide_fade_enabled = isset($_POST['custom_widgets_slide_fade_enabled']) ? 'yes' : 'no';
-        update_option('custom_widgets_slide_fade_enabled', $slide_fade_enabled);
-
         $scroll_animation_enabled = isset($_POST['custom_widgets_scroll_animation_enabled']) ? 'yes' : 'no';
         update_option('custom_widgets_scroll_animation_enabled', $scroll_animation_enabled);
 
@@ -101,6 +107,12 @@ function custom_widgets_admin_page() {
         $reveal_blur_enabled = isset($_POST['custom_widgets_reveal_blur_enabled']) ? 'yes' : 'no';
         update_option('custom_widgets_reveal_blur_enabled', $reveal_blur_enabled);
 
+        $hover_animation_enabled = isset($_POST['custom_widgets_hover_animation_enabled']) ? 'yes' : 'no';
+        update_option('custom_widgets_hover_animation_enabled', $hover_animation_enabled);
+
+        $scroll_reveal_enabled = isset($_POST['custom_widgets_scroll_reveal_enabled']) ? 'yes' : 'no';
+        update_option('custom_widgets_scroll_reveal_enabled', $scroll_reveal_enabled);
+
         $elementor_enabled = isset($_POST['custom_widgets_elementor_enabled']) ? 'yes' : 'no';
         update_option('custom_widgets_elementor_enabled', $elementor_enabled);
     }
@@ -108,10 +120,11 @@ function custom_widgets_admin_page() {
     $draggable_enabled = get_option('custom_widgets_draggable_enabled', 'no');
     $bouncing_text_enabled = get_option('custom_widgets_bouncing_text_enabled', 'no');
     $split_text_enabled = get_option('custom_widgets_split_text_enabled', 'no');
-    $slide_fade_enabled = get_option('custom_widgets_slide_fade_enabled', 'no');
     $scroll_animation_enabled = get_option('custom_widgets_scroll_animation_enabled', 'no');
     $parallax_enabled = get_option('custom_widgets_parallax_enabled', 'no');
     $reveal_blur_enabled = get_option('custom_widgets_reveal_blur_enabled', 'no');
+    $hover_animation_enabled = get_option('custom_widgets_hover_animation_enabled', 'no');
+    $scroll_reveal_enabled = get_option('custom_widgets_scroll_reveal_enabled', 'no');
     $elementor_enabled = get_option('custom_widgets_elementor_enabled', 'no');
     ?>
     <div class="wrap custom-nova-settings">
@@ -147,15 +160,6 @@ function custom_widgets_admin_page() {
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row">Widget Slide Fade (Slide Fade)</th>
-                    <td>
-                        <label for="custom_widgets_slide_fade_enabled">
-                            <input type="checkbox" name="custom_widgets_slide_fade_enabled" id="custom_widgets_slide_fade_enabled" value="yes" <?php checked($slide_fade_enabled, 'yes'); ?> />
-                            Anime le texte avec un effet de fondu glissé.
-                        </label>
-                    </td>
-                </tr>
-                <tr valign="top">
                     <th scope="row">Widget Scroll Animation (Scroll Animation)</th>
                     <td>
                         <label for="custom_widgets_scroll_animation_enabled">
@@ -179,6 +183,24 @@ function custom_widgets_admin_page() {
                         <label for="custom_widgets_reveal_blur_enabled">
                             <input type="checkbox" name="custom_widgets_reveal_blur_enabled" id="custom_widgets_reveal_blur_enabled" value="yes" <?php checked($reveal_blur_enabled, 'yes'); ?> />
                             Crée un effet de révélation avec flou.
+                        </label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Widget Hover Animation (Hover Animation)</th>
+                    <td>
+                        <label for="custom_widgets_hover_animation_enabled">
+                            <input type="checkbox" name="custom_widgets_hover_animation_enabled" id="custom_widgets_hover_animation_enabled" value="yes" <?php checked($hover_animation_enabled, 'yes'); ?> />
+                            Crée une animation de survol simple et élégante.
+                        </label>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Widget Scroll Reveal (Scroll Reveal)</th>
+                    <td>
+                        <label for="custom_widgets_scroll_reveal_enabled">
+                            <input type="checkbox" name="custom_widgets_scroll_reveal_enabled" id="custom_widgets_scroll_reveal_enabled" value="yes" <?php checked($scroll_reveal_enabled, 'yes'); ?> />
+                            Crée un effet de révélation lors du défilement.
                         </label>
                     </td>
                 </tr>

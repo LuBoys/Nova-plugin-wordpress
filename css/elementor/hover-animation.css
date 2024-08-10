@@ -1,0 +1,13 @@
+.hover-animation-wrapper {
+    display: inline-block;
+    overflow: hidden;
+}
+
+.hover-animation-text {
+    display: inline-block;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.hover-animation-text:hover {
+    transform: translateX(5px); /* Décale le texte de 5px vers la droite */
+}
